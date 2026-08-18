@@ -1,0 +1,9 @@
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+.vscode/
+.idea/
+node_modules/
+.cache/
