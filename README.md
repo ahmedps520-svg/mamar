@@ -15,11 +15,13 @@ npx --yes serve -l 5200 .
 
 ## The live previews are real
 
-The two project cards embed the **actual live sites** in scaled iframes locked to a
-1440×900 viewport — not screenshots. They update themselves whenever those sites change,
+The two project cards embed the **actual live sites** in scaled iframes at a fixed
+internal viewport — not screenshots. They update themselves whenever those sites change,
 so the portfolio can never show a stale mockup.
 
-- `assets/js/main.js` → `fitFrames()` scales each iframe to its card width
+- `assets/js/main.js` → `fitFrames()` sets each iframe to a fixed internal viewport
+  (1440x900 on desktop, 430x820 under 760px so phones preview the mobile layout)
+  and scales it to the card width
 - iframes only fetch once their card is near the viewport, so the page stays light
 - `transform-origin` flips for RTL, or the preview would scale off-screen in Arabic
 
@@ -38,11 +40,12 @@ attributes on the element, and change the visible text to match the Arabic one.
 
 ## Contact
 
-WhatsApp only, by design — **055 979 7724** → `https://wa.me/966559797724`, in 4 places.
+Two channels:
+
+- **WhatsApp** — 055 979 7724 → `https://wa.me/966559797724`, in 4 places
+- **Email** — `contact@mamar.site`, in the contact section, the footer and the JSON-LD
 
 There are **no `tel:` links anywhere** (verified), so nobody can accidentally ring you.
-There is also no email yet; when you have one, add it to the contact section and the
-footer, and consider adding it to the JSON-LD block.
 
 ## Design system
 
@@ -58,7 +61,7 @@ footer, and consider adding it to the JSON-LD block.
 Deliberately shares nothing with the two car wash sites in the portfolio — that is the
 whole argument the page is making.
 
-## Custom domain — not yet wired
+## Custom domain
 
 The repo has **no `CNAME` file on purpose.** Adding one before DNS resolves would make
 GitHub redirect `ahmedps520-svg.github.io/mamar` to a domain that doesn't answer yet,

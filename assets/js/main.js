@@ -109,14 +109,22 @@
   /* ---------- 5. LIVE SITE PREVIEWS ----------
      Each frame renders the real site in an iframe locked to a 1440px
      viewport, then scaled to whatever width the card happens to be. */
-  var FRAME_W = 1440, FRAME_H = 900;
+  // On a phone, scaling a 1440px desktop render down to ~330px makes the
+  // preview unreadable — so narrow screens preview the site's own mobile
+  // layout at near 1:1 instead.
+  function frameSize() {
+    return window.innerWidth < 760 ? { w: 430, h: 820 } : { w: 1440, h: 900 };
+  }
   function fitFrames() {
+    var d = frameSize();
     $$('.frame__vp').forEach(function (vp) {
       var f = $('iframe', vp);
       if (!f) return;
-      var s = vp.clientWidth / FRAME_W;
+      f.style.width = d.w + 'px';
+      f.style.height = d.h + 'px';
+      var s = vp.clientWidth / d.w;
       f.style.transform = 'scale(' + s + ')';
-      vp.style.height = Math.round(FRAME_H * s) + 'px';
+      vp.style.height = Math.round(d.h * s) + 'px';
     });
   }
   // only fetch the real sites once their card is near the viewport
@@ -129,6 +137,10 @@
       if (r.top < vh * 1.6 && r.bottom > -vh) {
         f.src = f.getAttribute('data-src');
         f.addEventListener('load', function () { f.classList.add('in'); fitFrames(); });
+        // the frame only fades in on `load`; if that never fires (slow network,
+        // blocked request, backgrounded tab) reveal it anyway rather than
+        // leaving an empty box at opacity:0 forever
+        setTimeout(function () { f.classList.add('in'); fitFrames(); }, 3000);
         return false;
       }
       return true;
