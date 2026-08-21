@@ -358,9 +358,16 @@ ul,ol{ margin:0; padding:0; list-style:none; }
   .row p{ grid-column:2; }
   .foot__in{ grid-template-columns:1fr 1fr; }
 }
+/* keep nav controls above the open menu */
+.nav .mk, .nav .brand, .nav .logo, .nav__r, .nav__act{ position:relative; z-index:3; }
+
 @media (max-width:900px){
   .nav__l{
-    position:fixed; inset:0; flex-direction:column; justify-content:center; align-items:flex-start;
+    /* The sticky nav gets backdrop-filter, which makes it the containing
+       block for position:fixed children — inset:0 would then resolve against
+       the ~60px bar, pushing menu links off-screen. Pin to the viewport with
+       an explicit height instead. */
+    position:fixed; top:0; inset-inline:0; height:100dvh; flex-direction:column; justify-content:center; align-items:flex-start;
     gap:10px; margin:0; padding:0 var(--pad); background:var(--bg);
     clip-path:inset(0 0 100% 0); transition:clip-path .75s var(--e); pointer-events:none;
   }
