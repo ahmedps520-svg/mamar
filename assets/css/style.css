@@ -238,6 +238,8 @@ ul,ol{ margin:0; padding:0; list-style:none; }
 .chips{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:26px; }
 .chips span{ font-family:var(--ff-m); font-size:10.5px; letter-spacing:.05em; padding:6px 11px;
   border:1px solid var(--line-2); border-radius:100px; color:var(--ink-2); }
+/* marks a build made on spec rather than commissioned by a client */
+.chips span.spec{ border-color:var(--red); color:var(--red); }
 
 .lnk{ display:inline-flex; align-items:center; gap:9px; font-size:14px; font-weight:600;
   padding-bottom:5px; border-bottom:1px solid var(--red); transition:gap .35s var(--e), color .3s; }
