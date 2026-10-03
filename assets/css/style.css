@@ -240,6 +240,8 @@ ul,ol{ margin:0; padding:0; list-style:none; }
   border:1px solid var(--line-2); border-radius:100px; color:var(--ink-2); }
 /* marks a build made on spec rather than commissioned by a client */
 .chips span.spec{ border-color:var(--red); color:var(--red); }
+/* marks the flagship — a product rather than a single-business site */
+.chips span.lead{ border-color:var(--red); background:var(--red); color:#0B0C0D; font-weight:600; }
 
 .lnk{ display:inline-flex; align-items:center; gap:9px; font-size:14px; font-weight:600;
   padding-bottom:5px; border-bottom:1px solid var(--red); transition:gap .35s var(--e), color .3s; }
@@ -268,6 +270,19 @@ ul,ol{ margin:0; padding:0; list-style:none; }
 .frame__vp iframe.in{ opacity:1; }
 .frame__live{ display:flex; align-items:center; gap:9px; margin-top:14px; font-family:var(--ff-m);
   font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--mut); }
+
+/* A card whose preview is a still rather than a live frame. The pulsing dot
+   is the page's promise that a frame is the running site, so a still gets a
+   plain square instead — the label should not have to undo the dot. */
+.frame__vp--still img{ display:block; width:100%; height:auto; }
+.frame__live--still .sq{ width:6px; height:6px; flex:0 0 auto; border:1px solid var(--mut); border-radius:1px; }
+
+/* The flagship leads the section, so it is given the wider preview column
+   and a little more air beneath it than the cards that follow. */
+.proj--lead{ grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);
+  margin-bottom:clamp(84px,10vw,164px); }
+.proj--lead .proj__idx{ font-size:13px; }
+.proj--lead .proj__meta h3{ font-size:clamp(2rem,4.1vw,3.3rem); }
 
 .next{ font-family:var(--ff-d); font-size:clamp(1.5rem,4vw,2.8rem); color:var(--faint);
   border-top:1px solid var(--line); padding-top:clamp(30px,4vw,50px); }

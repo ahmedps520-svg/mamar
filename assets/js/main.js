@@ -71,6 +71,7 @@
   /* ---------- 3. LANGUAGE ---------- */
   var langBtn = $('#langBtn'), langTx = $('#langTx');
   var nodes = $$('[data-en]');
+  var alts = $$('[data-alt-en]');
   function applyLang(lang, persist) {
     var ar = lang === 'ar';
     document.documentElement.lang = ar ? 'ar' : 'en';
@@ -78,6 +79,11 @@
     nodes.forEach(function (el) {
       var v = el.getAttribute(ar ? 'data-ar' : 'data-en');
       if (v != null) el.innerHTML = v;
+    });
+    /* alt is an attribute, not content, so the innerHTML pass above skips it */
+    alts.forEach(function (el) {
+      var v = el.getAttribute(ar ? 'data-alt-ar' : 'data-alt-en');
+      if (v != null) el.setAttribute('alt', v);
     });
     if (langTx) langTx.textContent = ar ? 'EN' : 'ع';
     if (persist) { try { localStorage.setItem('mamar-lang', lang); } catch (e) {} }
