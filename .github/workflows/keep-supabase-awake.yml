@@ -1,0 +1,17 @@
+# Free Supabase projects pause after ~7 days without activity. This pings the booking database
+# every two days (a harmless read of the live-update counters) so Mamar Booking never goes to sleep.
+name: Keep Supabase awake
+on:
+  schedule:
+    - cron: '17 6 */2 * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Mamar Booking
+        run: |
+          curl -sf -X POST "https://yhtcciquttbasylejhre.supabase.co/rest/v1/rpc/pub_live" \
+            -H "apikey: sb_publishable_hMU-atpeUTNXpGos22q6Uw_iURR26sm" \
+            -H "content-type: application/json" \
+            -d '{"p":{"business_id":"00000000-0000-0000-0000-000000000000"}}'
