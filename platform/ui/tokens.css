@@ -1,0 +1,216 @@
+/* ==========================================================
+   MAMAR BOOKING — design tokens
+   Two layers:
+     --m-*  studio tokens (Mamar's own surfaces: start, admin)
+     --b-*  booking theme tokens — every component in kit.css is
+            built only on these, so a business theme restyles all.
+   Default look: "Signature" (Mamar dark). [data-theme="signature-light"]
+   is the paper variant. theme.js writes custom brands inline.
+   ========================================================== */
+
+/* ---------- 1. Studio (Mamar) ---------- */
+:root {
+  --m-bg: #08090B;
+  --m-bg-2: #0D0F12;
+  --m-bg-3: #14171C;
+  --m-ink: #EFEBE4;
+  --m-ink-2: #B4AFA6;
+  --m-mut: #8F8B83;
+  --m-faint: #4A4842;
+  --m-line: rgba(239, 235, 228, .11);
+  --m-line-2: rgba(239, 235, 228, .22);
+  --m-red: #FF4A2B;
+  --m-red-2: #D93216;
+  --m-paper: #F4F0EA;
+  --m-coal: #141414;
+
+  --m-font-d: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --m-font-b: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --m-font-m: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+  --m-font-ar-d: 'Noto Kufi Arabic', 'Instrument Serif', serif;
+  --m-font-ar-b: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', system-ui, sans-serif;
+
+  --m-shell: 1280px;
+  --m-pad: clamp(20px, 5vw, 72px);
+  --m-e: cubic-bezier(.2, .7, 0, 1);
+  --m-e2: cubic-bezier(.34, 1.3, .64, 1);
+}
+
+/* ---------- 2. Scales (theme-independent) ---------- */
+:root {
+  /* spacing — 4px base, with two fluid steps for page rhythm */
+  --b-s-1: 4px;
+  --b-s-2: 8px;
+  --b-s-3: 12px;
+  --b-s-4: 16px;
+  --b-s-5: 20px;
+  --b-s-6: 24px;
+  --b-s-7: 32px;
+  --b-s-8: 40px;
+  --b-s-9: 48px;
+  --b-s-10: 64px;
+  --b-s-11: 80px;
+  --b-gutter: clamp(16px, 4.6vw, 32px);
+  --b-section: clamp(40px, 7vw, 96px);
+
+  /* type — fluid with clamp(), 16px floor for inputs (no iOS zoom) */
+  --b-t-2xs: .6875rem;                                   /* 11 */
+  --b-t-xs: .75rem;                                      /* 12 */
+  --b-t-sm: .8125rem;                                    /* 13 */
+  --b-t-base: .9375rem;                                  /* 15 */
+  --b-t-md: 1rem;                                        /* 16 */
+  --b-t-lg: clamp(1.0625rem, 1.02rem + .2vw, 1.1875rem); /* 17 → 19 */
+  --b-t-xl: clamp(1.25rem, 1.14rem + .5vw, 1.5rem);      /* 20 → 24 */
+  --b-t-2xl: clamp(1.75rem, 1.45rem + 1.4vw, 2.5rem);    /* 28 → 40 */
+  --b-t-3xl: clamp(2.25rem, 1.75rem + 2.4vw, 3.5rem);    /* 36 → 56 */
+  --b-t-4xl: clamp(2.75rem, 1.9rem + 4.2vw, 5rem);       /* 44 → 80 */
+
+  --b-lh: 1.55;
+  --b-lh-tight: 1.25;
+  --b-lh-d: 1.04;
+  --b-d-scale: 1;               /* display size multiplier (Arabic shrinks it) */
+  --b-track: 0;
+  --b-track-ui: -.005em;
+  --b-track-caps: .14em;
+  --b-caps: uppercase;
+  --b-display-weight: 400;
+  --b-display-track: -.022em;
+
+  /* radii */
+  --b-radius-sm: 10px;
+  --b-radius: 14px;
+  --b-radius-lg: 20px;
+  --b-radius-pill: 999px;
+
+  /* motion — 160 / 240 / 320 ms, eased */
+  --b-dur-1: 160ms;
+  --b-dur-2: 240ms;
+  --b-dur-3: 320ms;
+  --b-ease: cubic-bezier(.2, .7, 0, 1);          /* studio ease: quick out, long settle */
+  --b-ease-out: cubic-bezier(.16, 1, .3, 1);
+  --b-ease-in: cubic-bezier(.5, 0, .75, 0);
+  --b-ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --b-ease-spring: cubic-bezier(.34, 1.3, .64, 1);
+
+  /* layering */
+  --b-z-bar: 40;
+  --b-z-sheet: 80;
+  --b-z-toast: 90;
+  --b-z-grain: 99;
+
+  /* direction helper: 1 in LTR, −1 in RTL (for transforms) */
+  --b-dirx: 1;
+
+  /* grain */
+  --b-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[dir="rtl"] { --b-dirx: -1; }
+
+/* ---------- 3. Fonts ---------- */
+:root {
+  --b-font-d: var(--m-font-d);
+  --b-font-b: var(--m-font-b);
+  --b-font-m: var(--m-font-m);
+}
+/*
+  Arabic: Noto Kufi Arabic for display (the studio's face — geometric,
+  holds its own beside Instrument Serif) and IBM Plex Sans Arabic for body:
+  open counters and a calmer texture at 13–16px, where Kufi gets dense.
+  Arabic needs more line-height, no tracking and no caps.
+*/
+html[lang="ar"] {
+  --b-font-d: 'Noto Kufi Arabic', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --b-font-b: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', 'Space Grotesk', system-ui, sans-serif;
+  --b-font-m: 'JetBrains Mono', 'IBM Plex Sans Arabic', ui-monospace, monospace;
+  --b-lh: 1.75;
+  --b-lh-tight: 1.5;
+  --b-lh-d: 1.45;
+  --b-d-scale: .74;
+  --b-track: 0;
+  --b-track-ui: 0;
+  --b-track-caps: 0;
+  --b-caps: none;
+  --b-display-weight: 600;
+  --b-display-track: 0;
+}
+
+/* ---------- 4. Signature (dark) — the default ---------- */
+:root,
+[data-theme="signature"] {
+  --b-bg: #08090B;
+  --b-surface: #101216;
+  --b-surface-2: #171A1F;
+  --b-raise: #23262C;            /* raised control on a surface (segmented thumb) */
+  --b-ink: #EFEBE4;
+  --b-ink-2: #B4AFA6;
+  --b-mut: #8F8B83;
+  --b-line: rgba(239, 235, 228, .10);
+  --b-line-2: rgba(239, 235, 228, .20);
+  --b-accent: #FF4A2B;
+  --b-accent-2: #D93216;
+  --b-accent-ink: #0B0B0C;
+  --b-accent-text: #FF4A2B;      /* accent used as text / hairline on --b-bg */
+  --b-ok: #5DD39E;
+  --b-warn: #F2B544;
+  --b-err: #FF6B5E;
+  --b-info: #8AB4F8;
+  --b-scrim: rgba(0, 0, 0, .62);
+  --b-glass: rgba(8, 9, 11, .72);
+  --b-grain-opacity: .032;
+  --b-shadow-1: 0 1px 0 rgba(255, 255, 255, .035) inset, 0 1px 2px rgba(0, 0, 0, .5);
+  --b-shadow-2: 0 1px 0 rgba(255, 255, 255, .05) inset, 0 12px 32px -12px rgba(0, 0, 0, .7);
+  --b-shadow-3: 0 -1px 0 rgba(255, 255, 255, .06) inset, 0 32px 80px -24px rgba(0, 0, 0, .85);
+  color-scheme: dark;
+}
+
+/* ---------- 5. Signature light — warm paper ---------- */
+[data-theme="signature-light"] {
+  --b-bg: #F4F0EA;
+  --b-surface: #FBF9F6;
+  --b-surface-2: #ECE7E0;
+  --b-raise: #FFFFFF;
+  --b-ink: #141414;
+  --b-ink-2: #474542;
+  --b-mut: #66635F;
+  --b-line: rgba(20, 20, 20, .11);
+  --b-line-2: rgba(20, 20, 20, .20);
+  --b-accent: #FF4A2B;
+  --b-accent-2: #D93216;
+  --b-accent-ink: #0B0B0C;
+  --b-accent-text: #B8361F;
+  --b-ok: #1A6E44;
+  --b-warn: #8C5200;
+  --b-err: #B32F25;
+  --b-info: #2F5FB3;
+  --b-scrim: rgba(20, 18, 14, .36);
+  --b-glass: rgba(244, 240, 234, .8);
+  --b-grain-opacity: .045;
+  --b-shadow-1: 0 1px 2px rgba(20, 18, 14, .06), 0 0 0 1px rgba(20, 18, 14, .015);
+  --b-shadow-2: 0 2px 4px rgba(20, 18, 14, .04), 0 14px 32px -14px rgba(20, 18, 14, .18);
+  --b-shadow-3: 0 4px 12px rgba(20, 18, 14, .06), 0 36px 80px -24px rgba(20, 18, 14, .28);
+  color-scheme: light;
+}
+
+/* ---------- 6. Derived tokens ----------
+   Declared on every theme scope so they resolve against that scope's
+   own --b-accent (custom properties resolve where they are declared). */
+:root,
+[data-theme],
+.b-scope {
+  --b-accent-soft: color-mix(in srgb, var(--b-accent) 13%, transparent);
+  --b-accent-tint: color-mix(in srgb, var(--b-accent) 6%, var(--b-surface));
+  --b-accent-hover: color-mix(in srgb, var(--b-accent) 86%, var(--b-ink));
+  --b-ring: 0 0 0 2px var(--b-bg), 0 0 0 4px var(--b-accent-text);
+  --b-hover: color-mix(in srgb, var(--b-ink) 5%, transparent);
+  --b-press: color-mix(in srgb, var(--b-ink) 9%, transparent);
+}
+
+/* ---------- 7. Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --b-dur-1: 1ms;
+    --b-dur-2: 1ms;
+    --b-dur-3: 1ms;
+  }
+  html:focus-within { scroll-behavior: auto; }
+}

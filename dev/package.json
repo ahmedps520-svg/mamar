@@ -1,0 +1,15 @@
+{
+  "name": "mamar-booking-dev",
+  "private": true,
+  "type": "module",
+  "description": "Local server for Mamar Booking: serves mamar/ and runs the same SQL as Supabase in PGlite.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "reset": "node scripts/reset.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.9",
+    "web-push": "3.6.7"
+  }
+}

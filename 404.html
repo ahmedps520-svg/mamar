@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ممر · Mamar</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#08090B">
+<meta property="og:site_name" content="Mamar">
+<meta property="og:image" content="https://mamar.site/book/og.png">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap"></noscript>
+<!-- The booking shell (same as platform/linkpage.js SHELL_HEAD): /b/<slug> is served from this page until its link page is published. -->
+<link rel="stylesheet" href="/platform/ui/tokens.css">
+<link rel="stylesheet" href="/platform/ui/kit.css">
+<link rel="stylesheet" href="/book/book.css">
+<script>
+  /* Route before first paint: /b/<slug> books, everything else is a 404. Absolute paths: this page is served at any depth. */
+  (function () {
+    var m = /^\/b\/([a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?)\/?$/i.exec(location.pathname);
+    var d = document.documentElement;
+    d.setAttribute('data-route', m ? 'booking' : 'nf');
+    if (m) {
+      window.__mamarSlug = m[1].toLowerCase();
+      try {
+        var q = new URLSearchParams(location.search).get('lang');
+        var l = q === 'en' || q === 'ar' ? q : localStorage.getItem('mamar-lang');
+        if (l === 'en') { d.lang = 'en'; d.dir = 'ltr'; }
+      } catch (e) {}
+    }
+  })();
+</script>
+<style>
+  html[data-route="booking"] .nf { display: none !important; }
+  html[data-route="nf"] { background: #08090B; color-scheme: dark; }
+  html[data-route="nf"] #app { display: none; }
+  .nf {
+    --red: #FF4A2B; --ink: #EFEBE4; --ink2: #B4AFA6; --mut: #8F8B83; --line: rgba(239, 235, 228, .12);
+    position: relative; min-height: 100vh; min-height: 100dvh; overflow: hidden;
+    display: grid; grid-template-rows: auto 1fr auto;
+    background: #08090B; color: var(--ink);
+    font-family: 'Space Grotesk', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .nf::before {
+    content: ''; position: absolute; inset: -20% -20% auto; height: 80vh; pointer-events: none;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 74, 43, .14), transparent 70%);
+  }
+  .nf__bar { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px clamp(20px, 5vw, 56px); }
+  .nf__brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+  .nf__brand svg { width: 26px; height: 26px; fill: none; stroke: var(--red); stroke-width: 2.4; stroke-linecap: round; }
+  .nf__brand b { font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600; font-size: 1.15rem; line-height: 1; }
+  .nf__brand span { font-family: 'Instrument Serif', serif; font-size: 1.35rem; line-height: 1; color: var(--ink2); padding-inline-start: 10px; border-inline-start: 1px solid var(--line); }
+  .nf__code { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; color: var(--mut); text-transform: uppercase; }
+
+  .nf__main { position: relative; display: grid; place-items: center; padding: 8px clamp(20px, 5vw, 56px) 40px; }
+  .nf__stack { width: 100%; max-width: 980px; display: grid; gap: clamp(28px, 5vw, 56px); justify-items: center; text-align: center; }
+  .nf__arch { position: relative; width: clamp(150px, 34vw, 230px); aspect-ratio: 23 / 26; }
+  .nf__arch svg { width: 100%; height: 100%; overflow: visible; }
+  .nf__arch .o { fill: none; stroke: var(--ink); stroke-opacity: .9; stroke-width: 1.2; }
+  .nf__arch .i { fill: url(#nfvoid); stroke: var(--red); stroke-width: 1.4; }
+  .nf__arch .floor { stroke: var(--line); stroke-width: 1; }
+  .nf__arch .draw { stroke-dasharray: 700; stroke-dashoffset: 700; animation: nf-draw 1.6s cubic-bezier(.2, .7, 0, 1) .15s forwards; }
+  .nf__arch .draw.i { animation-delay: .45s; }
+  .nf__num {
+    position: absolute; inset: 34% 0 auto; text-align: center;
+    font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(2.6rem, 7vw, 3.6rem); line-height: 1;
+    color: var(--red); letter-spacing: -.02em; direction: ltr;
+    opacity: 0; animation: nf-in .9s cubic-bezier(.2, .7, 0, 1) .9s forwards;
+  }
+  @keyframes nf-draw { to { stroke-dashoffset: 0; } }
+  @keyframes nf-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .nf__copy { display: grid; grid-template-columns: 1fr; gap: 26px; width: 100%; }
+  .nf__lang { display: grid; gap: 10px; justify-items: center; }
+  .nf__lang h1, .nf__lang h2 { margin: 0; font-weight: 400; text-wrap: balance; }
+  .nf__ar h1 { font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600; font-size: clamp(1.55rem, 4.6vw, 2.3rem); line-height: 1.5; }
+  .nf__ar p { font-family: 'IBM Plex Sans Arabic', sans-serif; color: var(--ink2); font-size: 1rem; line-height: 1.8; margin: 0; max-width: 42ch; text-wrap: pretty; }
+  .nf__en h2 { font-family: 'Instrument Serif', serif; font-size: clamp(1.9rem, 5.4vw, 2.8rem); line-height: 1.05; letter-spacing: -.02em; }
+  .nf__en h2 em { color: var(--red); }
+  .nf__en p { color: var(--ink2); font-size: .975rem; line-height: 1.6; margin: 0; max-width: 36ch; }
+  .nf__rule { width: 48px; height: 1px; background: var(--line); justify-self: center; }
+  @media (min-width: 760px) {
+    .nf__copy { grid-template-columns: 1fr auto 1fr; align-items: center; gap: 40px; }
+    .nf__rule { width: 1px; height: 120px; }
+    .nf__ar { justify-items: start; text-align: start; }
+    .nf__en { justify-items: end; text-align: end; }
+  }
+
+  .nf__path {
+    display: inline-flex; align-items: center; gap: 8px; max-width: 100%;
+    padding: 6px 12px; border: 1px dashed var(--line); border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--mut); direction: ltr;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .nf__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .nf__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 52px; padding: 0 22px; border-radius: 14px;
+    background: var(--red); color: #0B0B0C; text-decoration: none; font-weight: 600;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .18) inset, 0 12px 28px -14px rgba(255, 74, 43, .8);
+    transition: transform .16s cubic-bezier(.2, .7, 0, 1), background-color .24s;
+  }
+  .nf__btn:hover { background: #FF6447; }
+  .nf__btn:active { transform: scale(.98); }
+  .nf__btn--ghost { background: transparent; color: var(--ink); box-shadow: 0 0 0 1px rgba(239, 235, 228, .22) inset; }
+  .nf__btn--ghost:hover { background: rgba(239, 235, 228, .05); }
+  .nf__btn .ar { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+  .nf__btn .sep { opacity: .5; }
+  .nf a:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+  .nf__foot { position: relative; display: flex; justify-content: center; gap: 12px; padding: 20px 20px max(20px, env(safe-area-inset-bottom)); color: var(--mut); font-size: 12px; border-top: 1px solid var(--line); }
+  .nf__foot span:lang(ar) { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+  @media (prefers-reduced-motion: reduce) {
+    .nf__arch .draw { animation: none; stroke-dashoffset: 0; }
+    .nf__num { animation: none; opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="nf" role="presentation">
+  <header class="nf__bar">
+    <a class="nf__brand" href="/" aria-label="ممر · Mamar">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M6 28V14a11 11 0 0 1 22 0v14"/><path d="M12.5 28V14.5a4.5 4.5 0 0 1 9 0V28"/></svg>
+      <b>ممر</b><span lang="en">Mamar</span>
+    </a>
+    <span class="nf__code" lang="en">Error 404</span>
+  </header>
+
+  <main class="nf__main">
+    <div class="nf__stack">
+      <div class="nf__arch" aria-hidden="true">
+        <svg viewBox="0 0 230 260">
+          <defs>
+            <linearGradient id="nfvoid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FF4A2B" stop-opacity=".16"/>
+              <stop offset="1" stop-color="#08090B" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path class="o draw" d="M20 250V112a95 95 0 0 1 190 0v138"/>
+          <path class="i draw" d="M64 250V118a51 51 0 0 1 102 0v132"/>
+          <path class="floor" d="M0 250.5h230"/>
+        </svg>
+        <span class="nf__num">404</span>
+      </div>
+
+      <div class="nf__copy">
+        <section class="nf__lang nf__ar" lang="ar" dir="rtl">
+          <h1>هذا الممرّ لا يؤدي إلى أي مكان.</h1>
+          <p>الصفحة التي تبحث عنها غير موجودة، أو نُقلت إلى مكان آخر.</p>
+        </section>
+        <span class="nf__rule" aria-hidden="true"></span>
+        <section class="nf__lang nf__en" lang="en" dir="ltr">
+          <h2>This passage <em>leads nowhere.</em></h2>
+          <p>The page you’re looking for doesn’t exist, or it has moved somewhere else.</p>
+        </section>
+      </div>
+
+      <span class="nf__path" id="nfPath" aria-label="Requested address"></span>
+
+      <div class="nf__actions">
+        <a class="nf__btn" href="/"><span class="ar" lang="ar">الرئيسية</span><span class="sep" aria-hidden="true">·</span><span lang="en">Home</span></a>
+        <a class="nf__btn nf__btn--ghost" href="/#talk"><span class="ar" lang="ar">تواصل معنا</span><span class="sep" aria-hidden="true">·</span><span lang="en">Contact</span></a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="nf__foot">
+    <span lang="ar">ممر — استوديو ويب في جدة</span><span aria-hidden="true">·</span><span lang="en">Mamar — a web studio in Jeddah</span>
+  </footer>
+</div>
+
+<script type="module">
+  if (window.__mamarSlug) {
+    import('/book/book.js')
+      .then((m) => m.mountBooking({ slug: window.__mamarSlug, source: 'link' }))
+      .catch(() => { document.documentElement.setAttribute('data-route', 'nf'); });
+  } else {
+    document.title = 'الصفحة غير موجودة · Page not found — Mamar';
+    const p = document.getElementById('nfPath');
+    let path = location.pathname;
+    try { path = decodeURIComponent(path); } catch { /* keep raw */ }
+    p.textContent = path.slice(0, 120);
+  }
+</script>
+</body>
+</html>

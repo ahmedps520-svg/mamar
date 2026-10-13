@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ورد للحلاقة · Ward Barbers — موقع تجريبي</title>
+<meta name="description" content="موقع تجريبي لنشاط وهمي يعرض حجز ممر · A demo site for a fictional barbershop, showing Mamar Booking.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0A0B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0A0B'/%3E%3Cpath d='M16 7c4 3 5 7 0 11-5-4-4-8 0-11z' fill='none' stroke='%23FF4A2B' stroke-width='2'/%3E%3Cpath d='M16 18v8' stroke='%23EFEBE4' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap"></noscript>
+<script>
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = q === 'en' || q === 'ar' ? q : localStorage.getItem('mamar-lang');
+    if (l === 'en') { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; }
+  } catch (e) {}
+</script>
+<style>
+  :root {
+    --bg: #0A0A0B; --bg2: #111214; --bg3: #17191C; --ink: #EFEBE4; --ink2: #B9B3A9; --mut: #8E897F;
+    --line: rgba(239, 235, 228, .1); --line2: rgba(239, 235, 228, .2); --red: #FF4A2B; --red2: #D93216;
+    --d: 'Instrument Serif', Georgia, serif; --b: 'Space Grotesk', system-ui, sans-serif;
+    --pad: clamp(20px, 5vw, 64px); --e: cubic-bezier(.2, .7, 0, 1);
+    color-scheme: dark;
+  }
+  html[lang="ar"] { --d: 'Noto Kufi Arabic', sans-serif; --b: 'IBM Plex Sans Arabic', 'Noto Kufi Arabic', sans-serif; }
+  html[lang="ar"] .en, html[lang="en"] .ar { display: none !important; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--b); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  html[lang="ar"] body { line-height: 1.8; }
+  a { color: inherit; }
+  img, svg { display: block; max-width: 100%; }
+  :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+  .skip { position: absolute; inset-inline-start: 12px; top: -60px; padding: 10px 14px; background: var(--ink); color: var(--bg); border-radius: 10px; z-index: 50; }
+  .skip:focus { top: 12px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: var(--pad); }
+  .grain { position: fixed; inset: -50%; pointer-events: none; z-index: 60; opacity: .035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 26px;
+    border: 0; border-radius: 999px; background: var(--red); color: #0B0B0C; font: 600 1rem/1 var(--b); cursor: pointer; text-decoration: none;
+    box-shadow: 0 1px 0 rgba(255,255,255,.2) inset, 0 14px 30px -14px rgba(255, 74, 43, .9); transition: transform .16s var(--e), background-color .24s; }
+  .btn:hover { background: #FF6447; }
+  .btn:active { transform: scale(.98); }
+  .btn--sm { min-height: 44px; padding: 0 18px; font-size: .9rem; }
+  .btn--ghost { background: transparent; color: var(--ink); box-shadow: 0 0 0 1px var(--line2) inset; }
+  .btn--ghost:hover { background: rgba(239, 235, 228, .06); }
+  .btn svg { width: 18px; height: 18px; }
+
+  /* header */
+  .top { position: sticky; top: 0; z-index: 20; background: rgba(10, 10, 11, .72); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border-bottom: 1px solid var(--line); }
+  .top__in { display: flex; align-items: center; gap: 18px; min-height: 68px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand svg { width: 30px; height: 30px; }
+  .brand b { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem; letter-spacing: .02em; line-height: 1; }
+  .brand span { font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600; font-size: 1.05rem; line-height: 1; padding-inline-start: 10px; border-inline-start: 1px solid var(--line2); }
+  .nav { display: none; gap: 26px; margin-inline-start: 18px; }
+  .nav a { text-decoration: none; color: var(--ink2); font-size: .92rem; transition: color .2s; }
+  .nav a:hover { color: var(--ink); }
+  .top__end { margin-inline-start: auto; display: flex; align-items: center; gap: 10px; }
+  .lang { min-width: 44px; height: 44px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line2); background: transparent; color: var(--ink); font: 500 .8rem/1 var(--b); letter-spacing: .08em; cursor: pointer; }
+  .lang:hover { background: rgba(239, 235, 228, .06); }
+  html[lang="en"] .lang { font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 1.05rem; letter-spacing: 0; }
+  .top .btn--sm { display: none; }
+  @media (min-width: 860px) { .nav { display: flex; } .top .btn--sm { display: inline-flex; } }
+
+  /* hero */
+  .hero { position: relative; padding-block: clamp(36px, 7vw, 96px) clamp(48px, 8vw, 110px); overflow: hidden; }
+  .hero__in { display: grid; gap: clamp(36px, 6vw, 72px); align-items: center; }
+  @media (min-width: 900px) { .hero__in { grid-template-columns: 1.15fr .85fr; } }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px; color: var(--red); font-size: .78rem; letter-spacing: .16em; text-transform: uppercase; }
+  html[lang="ar"] .eyebrow { letter-spacing: 0; font-size: .9rem; }
+  .eyebrow::before { content: ''; width: 26px; height: 1px; background: currentColor; }
+  h1 { margin: 0; font-family: var(--d); font-weight: 400; font-size: clamp(3rem, 2rem + 6vw, 6.4rem); line-height: .98; letter-spacing: -.025em; text-wrap: balance; }
+  html[lang="ar"] h1 { font-weight: 600; font-size: clamp(2.3rem, 1.6rem + 4.4vw, 4.6rem); line-height: 1.35; letter-spacing: 0; }
+  h1 em { font-style: italic; color: var(--red); }
+  html[lang="ar"] h1 em { font-style: normal; }
+  .lede { max-width: 46ch; margin: 26px 0 0; color: var(--ink2); font-size: clamp(1.02rem, .96rem + .3vw, 1.2rem); text-wrap: pretty; }
+  .hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 34px; }
+  .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 46px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .facts div { padding: 18px 0 0; }
+  .facts div + div { padding-inline-start: 18px; border-inline-start: 1px solid var(--line); margin-inline-start: 18px; }
+  .facts dt { font-family: var(--d); font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.4rem); line-height: 1; }
+  html[lang="ar"] .facts dt { font-weight: 600; font-size: clamp(1.3rem, 1.1rem + 1vw, 1.8rem); }
+  .facts dd { margin: 8px 0 0; color: var(--mut); font-size: .84rem; line-height: 1.45; }
+
+  .art { position: relative; justify-self: center; width: min(100%, 420px); aspect-ratio: 4 / 5; }
+  .art__arch { position: absolute; inset: 0; border-radius: 999px 999px 18px 18px; overflow: hidden; border: 1px solid var(--line2);
+    background: repeating-linear-gradient(-34deg, #1A1B1E 0 22px, #141517 22px 44px); }
+  .art__pole { position: absolute; inset: 14% 31% 0; border-radius: 999px 999px 0 0; overflow: hidden; box-shadow: 0 0 0 1px rgba(239,235,228,.18) inset, 0 30px 80px -30px rgba(255,74,43,.6); }
+  .art__pole::before { content: ''; position: absolute; inset: -60% 0; background: repeating-linear-gradient(-38deg, var(--red) 0 18px, #EFEBE4 18px 30px, #0A0A0B 30px 40px, #EFEBE4 40px 52px); animation: pole 9s linear infinite; }
+  .art__pole::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.55), rgba(255,255,255,.12) 40%, rgba(0,0,0,.6)); }
+  @keyframes pole { to { transform: translateY(104px); } }
+  .art__rose { position: absolute; width: 46%; inset-inline-end: -6%; bottom: 7%; filter: drop-shadow(0 20px 30px rgba(0,0,0,.6)); }
+  .art__tag { position: absolute; inset-inline-start: -4%; top: 12%; padding: 12px 16px; border-radius: 14px; background: rgba(17, 18, 20, .86); border: 1px solid var(--line2); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: .82rem; line-height: 1.4; }
+  .art__tag b { display: block; font-family: var(--d); font-weight: 400; font-size: 1.35rem; }
+  html[lang="ar"] .art__tag b { font-weight: 600; font-size: 1.05rem; }
+  .art__tag span { color: var(--mut); }
+
+  /* offer */
+  .offer { border-block: 1px solid var(--line); background: linear-gradient(90deg, rgba(255,74,43,.1), transparent 60%); }
+  html[dir="rtl"] .offer { background: linear-gradient(270deg, rgba(255,74,43,.1), transparent 60%); }
+  .offer__in { display: flex; align-items: center; gap: 14px; min-height: 64px; padding-block: 12px; }
+  .offer__in svg { width: 22px; height: 22px; color: var(--red); flex: none; }
+  .offer__k { color: var(--red); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; flex: none; }
+  html[lang="ar"] .offer__k { letter-spacing: 0; font-size: .85rem; }
+  .offer [data-mamar-offer] { font-family: var(--d); font-size: clamp(1.1rem, 1rem + .6vw, 1.45rem); line-height: 1.3; }
+  html[lang="ar"] .offer [data-mamar-offer] { font-weight: 500; font-size: clamp(.98rem, .9rem + .4vw, 1.15rem); }
+  .offer [data-mamar-offer]:empty::before { content: '…'; color: var(--mut); }
+
+  /* sections */
+  section.blk { padding-block: clamp(64px, 9vw, 120px); }
+  .blk + .blk { border-top: 1px solid var(--line); }
+  .head { display: grid; gap: 14px; margin-bottom: clamp(30px, 4vw, 52px); max-width: 640px; }
+  h2 { margin: 0; font-family: var(--d); font-weight: 400; font-size: clamp(2.2rem, 1.6rem + 3vw, 3.8rem); line-height: 1; letter-spacing: -.02em; }
+  html[lang="ar"] h2 { font-weight: 600; font-size: clamp(1.7rem, 1.3rem + 2vw, 2.7rem); line-height: 1.4; letter-spacing: 0; }
+  h2 em { font-style: italic; color: var(--red); }
+  html[lang="ar"] h2 em { font-style: normal; }
+  .sub { margin: 0; color: var(--ink2); }
+
+  .menu { display: grid; gap: clamp(30px, 5vw, 64px); }
+  @media (min-width: 900px) { .menu { grid-template-columns: 1fr 1.6fr; align-items: start; } }
+  .menu__note { display: flex; gap: 12px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; color: var(--ink2); font-size: .9rem; background: var(--bg2); }
+  .menu__note .dot { flex: none; width: 8px; height: 8px; margin-top: .55em; border-radius: 50%; background: #5DD39E; box-shadow: 0 0 0 4px rgba(93, 211, 158, .15); animation: live 2s ease-in-out infinite; }
+  @keyframes live { 50% { box-shadow: 0 0 0 8px rgba(93, 211, 158, 0); } }
+  .prices { --mamar-accent: var(--red); --mamar-accent-ink: #0B0B0C; --mamar-line: var(--line); --mamar-muted: var(--mut); min-height: 300px; font-size: 1.02rem; }
+  .prices .mamar-prices__name { font-family: var(--d); font-size: 1.35rem; font-weight: 400; line-height: 1.2; }
+  html[lang="ar"] .prices .mamar-prices__name { font-weight: 500; font-size: 1.08rem; line-height: 1.6; }
+  .prices .mamar-prices__title { color: var(--red); letter-spacing: .16em; }
+  html[lang="ar"] .prices .mamar-prices__title { letter-spacing: 0; font-size: .85rem; }
+  .prices .mamar-prices__price { font-weight: 500; }
+  .prices .mamar-prices__book { border-color: var(--line2); }
+  .prices .mamar-prices__book:hover { background: var(--red); color: #0B0B0C; border-color: var(--red); }
+  .loading { display: grid; gap: 10px; }
+  .loading i { display: block; height: 64px; border-radius: 12px; background: linear-gradient(90deg, var(--bg2), var(--bg3), var(--bg2)) 0 0 / 200% 100%; animation: sh 1.4s ease-in-out infinite; }
+  @keyframes sh { to { background-position: -200% 0; } }
+
+  /* gallery */
+  .gal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (min-width: 900px) { .gal { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 220px; } .gal .tall { grid-row: span 2; } .gal .wide { grid-column: span 2; } }
+  .tile { position: relative; min-height: 200px; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); background: var(--bg2); display: grid; place-items: center; }
+  .tile figcaption { position: absolute; inset-inline-start: 16px; bottom: 14px; font-size: .78rem; color: var(--ink2); letter-spacing: .04em; }
+  .tile svg { width: 64%; height: auto; }
+  .t1 { background: radial-gradient(80% 60% at 70% 20%, rgba(255,74,43,.22), transparent 60%), #111214; }
+  .t2 { background: repeating-linear-gradient(90deg, #121315 0 2px, #0E0F11 2px 14px); }
+  .t3 { background: radial-gradient(circle at 50% 120%, rgba(239,235,228,.14), transparent 60%), #0F1012; }
+  .t4 { background: conic-gradient(from 210deg at 50% 50%, #17181B, #0D0E10, #1B1C20, #0D0E10, #17181B); }
+  .t5 { background: linear-gradient(160deg, #1A1B1E, #0C0D0F); }
+  .t6 { background: repeating-radial-gradient(circle at 50% 50%, #121316 0 10px, #0E0F11 10px 20px); }
+  .steam path { animation: steam 4s ease-in-out infinite; }
+  .steam path:nth-child(2) { animation-delay: .7s; } .steam path:nth-child(3) { animation-delay: 1.4s; }
+  @keyframes steam { 0%, 100% { opacity: .25; transform: translateY(6px); } 50% { opacity: .9; transform: translateY(-6px); } }
+
+  /* hours + visit */
+  .two { display: grid; gap: clamp(36px, 6vw, 80px); }
+  @media (min-width: 900px) { .two { grid-template-columns: 1fr 1fr; } }
+  .hours { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .hours th, .hours td { padding: 14px 0; border-bottom: 1px solid var(--line); text-align: start; font-weight: 400; }
+  .hours td { text-align: end; color: var(--ink2); }
+  .hours tr.is-today th, .hours tr.is-today td { color: var(--ink); }
+  .hours tr.is-today th::after { content: ''; display: inline-block; width: 6px; height: 6px; margin-inline-start: 10px; border-radius: 50%; background: var(--red); vertical-align: middle; }
+  .hours small { display: block; color: var(--red); font-size: .78rem; }
+  .pray { margin-top: 18px; color: var(--mut); font-size: .88rem; display: flex; gap: 10px; }
+  .pray svg { width: 18px; height: 18px; flex: none; color: var(--red); margin-top: .3em; }
+  .map { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 4 / 3; background: #0E0F11; }
+  .map svg { width: 100%; height: 100%; }
+  .addr { display: grid; gap: 6px; margin-top: 20px; }
+  .addr b { font-family: var(--d); font-weight: 400; font-size: 1.6rem; }
+  html[lang="ar"] .addr b { font-weight: 600; font-size: 1.2rem; }
+  .addr span { color: var(--mut); }
+  .addr .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+  /* footer + dock */
+  footer { border-top: 1px solid var(--line); padding-block: 40px calc(110px + env(safe-area-inset-bottom)); color: var(--mut); font-size: .88rem; }
+  @media (min-width: 860px) { footer { padding-bottom: 48px; } }
+  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
+  .demo-note { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border: 1px dashed var(--line2); border-radius: 999px; color: var(--ink2); }
+  .madeby { display: inline-flex; align-items: center; gap: 8px; color: var(--mut); text-decoration: none; }
+  .madeby:hover { color: var(--ink); }
+  .madeby svg { width: 16px; height: 16px; fill: none; stroke: var(--red); stroke-width: 2.4; stroke-linecap: round; }
+  .dock { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; padding: 12px var(--pad) max(12px, env(safe-area-inset-bottom)); background: rgba(10, 10, 11, .82); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border-top: 1px solid var(--line); display: flex; align-items: center; gap: 14px; }
+  .dock__t { flex: 1; min-width: 0; font-size: .82rem; color: var(--mut); line-height: 1.35; }
+  .dock__t b { display: block; color: var(--ink); font-weight: 500; font-size: .95rem; }
+  .dock .btn { flex: none; }
+  @media (min-width: 860px) { .dock { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .art__pole::before, .steam path, .menu__note .dot, .loading i { animation: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#services"><span class="ar">تخطَّ إلى الأسعار</span><span class="en">Skip to prices</span></a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#top" aria-label="Ward Barbers · ورد للحلاقة">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4.5c5.2 3.6 6.4 8.6 0 13.4-6.4-4.8-5.2-9.8 0-13.4z" fill="none" stroke="#FF4A2B" stroke-width="1.6"/><path d="M16 9.5c2.4 1.7 2.9 4 0 6.3-2.9-2.3-2.4-4.6 0-6.3z" fill="#FF4A2B" opacity=".5"/><path d="M16 18v10M16 23c-2.6-.4-4.4-1.8-5.2-4M16 25c2.4-.3 4-1.5 4.8-3.6" fill="none" stroke="#EFEBE4" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <b>Ward</b><span>ورد</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#services"><span class="ar">الخدمات</span><span class="en">Services</span></a>
+      <a href="#work"><span class="ar">من المحل</span><span class="en">The shop</span></a>
+      <a href="#hours"><span class="ar">الأوقات والموقع</span><span class="en">Hours &amp; visit</span></a>
+    </nav>
+    <div class="top__end">
+      <button class="lang" id="lang" type="button">EN</button>
+      <button class="btn btn--sm" type="button" data-mamar-book><span class="ar">احجز موعدك</span><span class="en">Book now</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div>
+        <p class="eyebrow"><span class="ar">حي الروضة · جدة</span><span class="en">Al Rawdah · Jeddah</span></p>
+        <h1><span class="ar">حلاقة رجالية <em>بهدوء</em> ودقّة.</span><span class="en">Quiet, <em>precise</em> grooming for men.</span></h1>
+        <p class="lede"><span class="ar">ثلاثة كراسٍ، ومناشف ساخنة، ووقت محجوز لك وحدك. احجز في أقل من دقيقة، ونوقف الحجز وقت الصلاة.</span><span class="en">Three chairs, hot towels, and time kept just for you. Book in under a minute — we pause for prayer.</span></p>
+        <div class="hero__cta">
+          <button class="btn" type="button" data-mamar-book>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg>
+            <span class="ar">احجز موعدك</span><span class="en">Book an appointment</span>
+          </button>
+          <a class="btn btn--ghost" href="#services"><span class="ar">الأسعار</span><span class="en">See prices</span></a>
+        </div>
+        <dl class="facts">
+          <div><dt><span class="ar">٣</span><span class="en">3</span></dt><dd><span class="ar">كراسٍ، اختر كرسيك</span><span class="en">chairs — pick yours</span></dd></div>
+          <div><dt><span class="ar">١ ص</span><span class="en">1 AM</span></dt><dd><span class="ar">نسهر معك ليلة الخميس</span><span class="en">late on Thursdays</span></dd></div>
+          <div><dt><span class="ar">٤٥ د</span><span class="en">45′</span></dt><dd><span class="ar">لقصّة متقنة بلا عجلة</span><span class="en">for an unhurried cut</span></dd></div>
+        </dl>
+      </div>
+      <div class="art" aria-hidden="true">
+        <div class="art__arch"></div>
+        <div class="art__pole"></div>
+        <svg class="art__rose" viewBox="0 0 120 150">
+          <path d="M60 18c18 10 24 26 10 44-6 7-14 9-20 6-14-6-18-22-6-36 4-5 9-10 16-14z" fill="#1C0B08" stroke="#FF4A2B" stroke-width="1.6"/>
+          <path d="M58 30c10 4 13 14 6 22M52 36c-6 8-4 16 4 20M63 40c-3 6-9 9-14 8" fill="none" stroke="#FF4A2B" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M60 68v74M60 100c-14-2-24-10-28-24 12-1 22 6 28 18M60 116c12-3 20-11 22-23-10 1-18 8-22 17" fill="none" stroke="#EFEBE4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="art__tag"><b><span class="ar">منشفة ساخنة</span><span class="en">Hot towel</span></b><span><span class="ar">مع كل قصّة ولحية</span><span class="en">with every cut &amp; beard</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="offer">
+    <div class="wrap offer__in">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 4c.6 3.9 2.1 5.4 6 6-3.9.6-5.4 2.1-6 6-.6-3.9-2.1-5.4-6-6 3.9-.6 5.4-2.1 6-6z"/></svg>
+      <span class="offer__k"><span class="ar">العرض</span><span class="en">Offer</span></span>
+      <span data-mamar-offer aria-live="polite"></span>
+    </div>
+  </div>
+
+  <section class="blk" id="services">
+    <div class="wrap menu">
+      <div class="head">
+        <h2><span class="ar">الخدمات <em>والأسعار</em></span><span class="en">Services <em>&amp; prices</em></span></h2>
+        <p class="sub"><span class="ar">أسعار واضحة، شاملة الضريبة. اضغط «احجز» بجانب أي خدمة لتختار وقتك.</span><span class="en">Clear prices, VAT included. Tap Book next to any service to choose your time.</span></p>
+        <p class="menu__note"><span class="dot" aria-hidden="true"></span><span><span class="ar">هذه القائمة متصلة مباشرة بنظام الحجز: أي تغيير في السعر يظهر هنا فوراً.</span><span class="en">This list is wired to the booking system: any price change appears here instantly.</span></span></p>
+      </div>
+      <div class="prices" data-mamar-prices aria-busy="true"><div class="loading" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="work">
+    <div class="wrap">
+      <div class="head">
+        <h2><span class="ar">من <em>المحل</em></span><span class="en">Inside <em>the shop</em></span></h2>
+        <p class="sub"><span class="ar">أدوات تقليدية، وإيقاع هادئ.</span><span class="en">Traditional tools, an unhurried pace.</span></p>
+      </div>
+      <div class="gal">
+        <figure class="tile t1 tall" style="margin:0">
+          <svg viewBox="0 0 120 200" aria-hidden="true"><path d="M44 18h32v108c0 10-7 18-16 18s-16-8-16-18z" fill="none" stroke="#EFEBE4" stroke-width="1.5"/><path d="M52 26v96M60 26v96M68 26v96" stroke="#FF4A2B" stroke-width="1" opacity=".55"/><rect x="50" y="144" width="20" height="40" rx="4" fill="none" stroke="#EFEBE4" stroke-width="1.5"/><path d="M60 150v28" stroke="#EFEBE4" stroke-width="1"/></svg>
+          <figcaption><span class="ar">الموس التقليدي</span><span class="en">The straight razor</span></figcaption>
+        </figure>
+        <figure class="tile t2" style="margin:0">
+          <svg viewBox="0 0 160 120" aria-hidden="true"><circle cx="40" cy="86" r="16" fill="none" stroke="#EFEBE4" stroke-width="1.5"/><circle cx="40" cy="34" r="16" fill="none" stroke="#EFEBE4" stroke-width="1.5"/><path d="M54 78 140 30M54 42l86 48" stroke="#EFEBE4" stroke-width="1.5" stroke-linecap="round"/><circle cx="72" cy="60" r="3" fill="#FF4A2B"/></svg>
+          <figcaption><span class="ar">مقص القصّ</span><span class="en">Shears</span></figcaption>
+        </figure>
+        <figure class="tile t3" style="margin:0">
+          <svg class="steam" viewBox="0 0 160 120" aria-hidden="true"><path d="M58 50c-6-8 6-14 0-24" fill="none" stroke="#EFEBE4" stroke-width="1.4" stroke-linecap="round"/><path d="M80 48c-6-8 6-14 0-24" fill="none" stroke="#EFEBE4" stroke-width="1.4" stroke-linecap="round"/><path d="M102 50c-6-8 6-14 0-24" fill="none" stroke="#EFEBE4" stroke-width="1.4" stroke-linecap="round"/><rect x="36" y="66" width="88" height="30" rx="15" fill="none" stroke="#FF4A2B" stroke-width="1.5"/><path d="M46 81h68" stroke="#FF4A2B" stroke-width="1" opacity=".6"/></svg>
+          <figcaption><span class="ar">المنشفة الساخنة</span><span class="en">The hot towel</span></figcaption>
+        </figure>
+        <figure class="tile t4 wide" style="margin:0">
+          <svg viewBox="0 0 240 120" aria-hidden="true"><path d="M70 96h100M90 96V70h60v26M84 70c0-24 8-44 36-44s36 20 36 44" fill="none" stroke="#EFEBE4" stroke-width="1.5" stroke-linecap="round"/><path d="M120 96v14M100 110h40" stroke="#EFEBE4" stroke-width="1.5" stroke-linecap="round"/><circle cx="120" cy="48" r="5" fill="#FF4A2B"/></svg>
+          <figcaption><span class="ar">ثلاثة كراسٍ، لا انتظار</span><span class="en">Three chairs, no waiting</span></figcaption>
+        </figure>
+        <figure class="tile t5" style="margin:0">
+          <svg viewBox="0 0 160 120" aria-hidden="true"><rect x="30" y="52" width="100" height="14" rx="3" fill="none" stroke="#EFEBE4" stroke-width="1.5"/><path d="M38 66v22M46 66v22M54 66v22M62 66v22M70 66v22M78 66v22M86 66v22M94 66v22M102 66v22M110 66v22M118 66v22" stroke="#EFEBE4" stroke-width="1.2" stroke-linecap="round"/><path d="M30 44h100" stroke="#FF4A2B" stroke-width="1.5"/></svg>
+          <figcaption><span class="ar">تفاصيل اللحية</span><span class="en">Beard detailing</span></figcaption>
+        </figure>
+        <figure class="tile t6" style="margin:0">
+          <svg viewBox="0 0 160 120" aria-hidden="true"><circle cx="80" cy="60" r="34" fill="none" stroke="#EFEBE4" stroke-width="1.5"/><path d="M80 34v26l16 10" fill="none" stroke="#FF4A2B" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <figcaption><span class="ar">في موعدك تماماً</span><span class="en">Right on time</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="hours">
+    <div class="wrap two">
+      <div>
+        <div class="head">
+          <h2><span class="ar">أوقات <em>العمل</em></span><span class="en">Opening <em>hours</em></span></h2>
+        </div>
+        <table class="hours">
+          <caption class="sr"><span class="ar">أوقات العمل</span><span class="en">Opening hours</span></caption>
+          <tbody>
+            <tr data-wd="6"><th scope="row"><span class="ar">السبت</span><span class="en">Saturday</span></th><td><span class="ar">١٠:٠٠ ص – ١١:٣٠ م</span><span class="en">10:00 AM – 11:30 PM</span></td></tr>
+            <tr data-wd="0"><th scope="row"><span class="ar">الأحد</span><span class="en">Sunday</span></th><td><span class="ar">١٠:٠٠ ص – ١١:٣٠ م</span><span class="en">10:00 AM – 11:30 PM</span></td></tr>
+            <tr data-wd="1"><th scope="row"><span class="ar">الاثنين</span><span class="en">Monday</span></th><td><span class="ar">١٠:٠٠ ص – ١١:٣٠ م</span><span class="en">10:00 AM – 11:30 PM</span></td></tr>
+            <tr data-wd="2"><th scope="row"><span class="ar">الثلاثاء</span><span class="en">Tuesday</span></th><td><span class="ar">١٠:٠٠ ص – ١١:٣٠ م</span><span class="en">10:00 AM – 11:30 PM</span></td></tr>
+            <tr data-wd="3"><th scope="row"><span class="ar">الأربعاء</span><span class="en">Wednesday</span></th><td><span class="ar">١٠:٠٠ ص – ١١:٣٠ م</span><span class="en">10:00 AM – 11:30 PM</span></td></tr>
+            <tr data-wd="4"><th scope="row"><span class="ar">الخميس</span><span class="en">Thursday</span></th><td><span class="ar">١٠:٠٠ ص – ١:٠٠ ص</span><span class="en">10:00 AM – 1:00 AM</span><small><span class="ar">حتى بعد منتصف الليل</span><span class="en">past midnight</span></small></td></tr>
+            <tr data-wd="5"><th scope="row"><span class="ar">الجمعة</span><span class="en">Friday</span></th><td><span class="ar">٤:٠٠ م – ١٢:٠٠ ص</span><span class="en">4:00 PM – 12:00 AM</span></td></tr>
+          </tbody>
+        </table>
+        <p class="pray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M15.5 4.6A8 8 0 1 0 19.4 16a6.5 6.5 0 0 1-3.9-11.4z"/></svg><span><span class="ar">نتوقف قرابة ٢٥ دقيقة عند كل صلاة، وساعة لصلاة الجمعة. نظام الحجز يعرف ذلك ولن يعطيك وقتاً فيها.</span><span class="en">We pause about 25 minutes for each prayer, and an hour for Jumu’ah. The booking system knows, so you’ll never get a time inside one.</span></span></p>
+      </div>
+      <div id="visit">
+        <div class="map" aria-hidden="true">
+          <svg viewBox="0 0 400 300">
+            <rect width="400" height="300" fill="#0E0F11"/>
+            <path d="M0 0h70c-8 40 12 70-6 110s10 90-10 130 6 50-4 60H0z" fill="#101A22"/>
+            <path d="M70 0c-8 40 12 70-6 110s10 90-10 130 6 50-4 60" fill="none" stroke="rgba(239,235,228,.15)"/>
+            <g stroke="rgba(239,235,228,.09)" stroke-width="10" fill="none"><path d="M60 72h340M48 190h352M150 0v300M290 0v300"/></g>
+            <g stroke="rgba(239,235,228,.05)" stroke-width="5" fill="none"><path d="M60 130h340M60 246h340M210 0v300M350 0v300M100 0v300"/></g>
+            <path d="M150 72 290 190" stroke="rgba(255,74,43,.35)" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+            <circle cx="232" cy="142" r="36" fill="rgba(255,74,43,.08)"/>
+            <path d="M232 160s-20-17-20-33a20 20 0 0 1 40 0c0 16-20 33-20 33z" fill="#FF4A2B"/>
+            <circle cx="232" cy="127" r="7" fill="#0A0A0B"/>
+          </svg>
+        </div>
+        <div class="addr">
+          <b><span class="ar">حي الروضة، جدة</span><span class="en">Al Rawdah, Jeddah</span></b>
+          <span><span class="ar">موقف سيارات أمام المحل.</span><span class="en">Parking right outside.</span></span>
+          <div class="btns">
+            <button class="btn" type="button" data-mamar-book><span class="ar">احجز موعدك</span><span class="en">Book a time</span></button>
+            <a class="btn btn--ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Al%20Rawdah%2C%20Jeddah" target="_blank" rel="noopener"><span class="ar">الاتجاهات</span><span class="en">Directions</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="demo-note"><span class="ar">موقع تجريبي — نشاط وهمي صُمّم لعرض نظام حجز ممر</span><span class="en">Demo site — a fictional business made to show Mamar Booking</span></span>
+    <a class="madeby" href="https://mamar.site" target="_blank" rel="noopener"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M6 28V14a11 11 0 0 1 22 0v14"/><path d="M12.5 28V14.5a4.5 4.5 0 0 1 9 0V28"/></svg><span class="ar">صُنع بواسطة ممر</span><span class="en">Made by Mamar</span></a>
+  </div>
+</footer>
+
+<div class="dock">
+  <p class="dock__t"><b><span class="ar">ورد للحلاقة</span><span class="en">Ward Barbers</span></b><span class="ar">احجز في أقل من دقيقة</span><span class="en">Book in under a minute</span></p>
+  <button class="btn" type="button" data-mamar-book><span class="ar">احجز موعدك</span><span class="en">Book now</span></button>
+</div>
+
+<script src="/book/embed.js" data-business="ward-barber" defer></script>
+<script>
+  (function () {
+    var H = document.documentElement, btn = document.getElementById('lang');
+    var titles = { ar: 'ورد للحلاقة · موقع تجريبي', en: 'Ward Barbers · Demo site' };
+    function paint() {
+      var l = H.lang === 'en' ? 'en' : 'ar';
+      btn.textContent = l === 'ar' ? 'EN' : 'ع';
+      btn.setAttribute('aria-label', l === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
+      document.title = titles[l];
+      var wd = new Date(Date.now() + 3 * 3600e3).getUTCDay();
+      document.querySelectorAll('.hours tr').forEach(function (r) { r.classList.toggle('is-today', +r.getAttribute('data-wd') === wd); });
+    }
+    btn.addEventListener('click', function () {
+      var n = H.lang === 'en' ? 'ar' : 'en';
+      H.lang = n; H.dir = n === 'ar' ? 'rtl' : 'ltr';
+      try { localStorage.setItem('mamar-lang', n); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+</script>
+</body>
+</html>

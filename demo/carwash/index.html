@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لمعة لغسيل السيارات · Lamaa Car Spa — موقع تجريبي</title>
+<meta name="description" content="موقع تجريبي لنشاط وهمي يعرض حجز ممر · A demo site for a fictional car spa, showing Mamar Booking.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F7F5F0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230E6B5C'/%3E%3Cpath d='M16 6c4 5 7 9 7 13a7 7 0 0 1-14 0c0-4 3-8 7-13z' fill='%23F7F5F0'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"></noscript>
+<script>
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = q === 'en' || q === 'ar' ? q : localStorage.getItem('mamar-lang');
+    if (l === 'en') { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; }
+  } catch (e) {}
+</script>
+<style>
+  :root {
+    --bg: #F7F5F0; --card: #FFFFFF; --ink: #14201D; --ink2: #3F4E4A; --mut: #6B7874;
+    --line: rgba(20, 32, 29, .1); --line2: rgba(20, 32, 29, .18);
+    --teal: #0E6B5C; --teal2: #0A5649; --mint: #CDEBE3; --foam: #EAF6F2; --sun: #F2B544;
+    --f: 'Manrope', system-ui, sans-serif; --pad: clamp(18px, 5vw, 60px); --e: cubic-bezier(.2, .7, 0, 1); --r: 22px;
+    color-scheme: light;
+  }
+  html[lang="ar"] { --f: 'Tajawal', 'Manrope', system-ui, sans-serif; }
+  html[lang="ar"] .en, html[lang="en"] .ar { display: none !important; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  html[lang="ar"] body { font-size: 17px; line-height: 1.75; }
+  a { color: inherit; }
+  svg { display: block; max-width: 100%; }
+  :focus-visible { outline: 2.5px solid var(--teal); outline-offset: 3px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .skip { position: absolute; inset-inline-start: 12px; top: -60px; padding: 10px 14px; background: var(--ink); color: #fff; border-radius: 10px; z-index: 50; }
+  .skip:focus { top: 12px; }
+  .wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: var(--pad); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border: 0; border-radius: 16px;
+    background: var(--teal); color: #fff; font: 700 1rem/1 var(--f); cursor: pointer; text-decoration: none;
+    box-shadow: 0 1px 0 rgba(255,255,255,.2) inset, 0 12px 26px -12px rgba(14, 107, 92, .7); transition: transform .16s var(--e), background-color .24s; }
+  .btn:hover { background: var(--teal2); }
+  .btn:active { transform: scale(.98); }
+  .btn--sm { min-height: 44px; padding: 0 18px; font-size: .9rem; border-radius: 13px; }
+  .btn--soft { background: var(--card); color: var(--ink); box-shadow: 0 0 0 1px var(--line) inset, 0 6px 16px -10px rgba(20,32,29,.25); }
+  .btn--soft:hover { background: #fff; box-shadow: 0 0 0 1px var(--line2) inset; }
+  .btn svg { width: 19px; height: 19px; }
+
+  .top { position: sticky; top: 0; z-index: 20; background: rgba(247, 245, 240, .82); -webkit-backdrop-filter: blur(16px) saturate(1.3); backdrop-filter: blur(16px) saturate(1.3); border-bottom: 1px solid var(--line); }
+  .top__in { display: flex; align-items: center; gap: 18px; min-height: 68px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; }
+  .brand i { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: var(--teal); }
+  .brand i svg { width: 18px; height: 18px; }
+  .brand b { font-size: 1.15rem; letter-spacing: -.02em; line-height: 1.1; }
+  .brand small { display: block; font-weight: 500; font-size: .7rem; color: var(--mut); letter-spacing: .04em; }
+  .nav { display: none; gap: 24px; margin-inline-start: 18px; }
+  .nav a { text-decoration: none; color: var(--ink2); font-weight: 500; font-size: .93rem; }
+  .nav a:hover { color: var(--teal); }
+  .top__end { margin-inline-start: auto; display: flex; align-items: center; gap: 10px; }
+  .lang { min-width: 44px; height: 44px; padding: 0 12px; border-radius: 13px; border: 1px solid var(--line2); background: var(--card); color: var(--ink); font: 700 .8rem/1 'Manrope', sans-serif; letter-spacing: .06em; cursor: pointer; }
+  html[lang="en"] .lang { font-family: 'Tajawal', sans-serif; font-size: 1.1rem; letter-spacing: 0; }
+  .top .btn--sm { display: none; }
+  @media (min-width: 860px) { .nav { display: flex; } .top .btn--sm { display: inline-flex; } }
+
+  .hero { padding-block: clamp(26px, 5vw, 64px) clamp(36px, 6vw, 72px); }
+  .hero__in { display: grid; gap: 28px; align-items: center; }
+  @media (min-width: 920px) { .hero__in { grid-template-columns: 1fr 1.05fr; gap: 56px; } }
+  .chip { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 0 14px 0 6px; border-radius: 999px; background: var(--card); box-shadow: 0 0 0 1px var(--line) inset; font-size: .85rem; font-weight: 600; color: var(--teal); }
+  .chip i { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--foam); }
+  .chip i svg { width: 14px; height: 14px; }
+  h1 { margin: 18px 0 0; font-weight: 800; font-size: clamp(2.5rem, 1.7rem + 4.4vw, 4.9rem); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
+  html[lang="ar"] h1 { font-size: clamp(2.3rem, 1.6rem + 4vw, 4.4rem); line-height: 1.25; letter-spacing: 0; }
+  h1 .hl { color: var(--teal); position: relative; white-space: nowrap; }
+  h1 .hl::after { content: ''; position: absolute; inset-inline: 0; bottom: .06em; height: .18em; border-radius: 99px; background: var(--mint); z-index: -1; }
+  .lede { max-width: 44ch; margin: 20px 0 0; color: var(--ink2); font-size: clamp(1.02rem, .96rem + .3vw, 1.18rem); text-wrap: pretty; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .perks { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 26px 0 0; padding: 0; list-style: none; color: var(--mut); font-size: .9rem; }
+  .perks li { display: inline-flex; align-items: center; gap: 8px; }
+  .perks svg { width: 16px; height: 16px; color: var(--teal); }
+
+  .stage { position: relative; border-radius: 30px; overflow: hidden; aspect-ratio: 5 / 4;
+    background: radial-gradient(110% 80% at 80% 0%, #3BA58F 0%, transparent 55%), linear-gradient(160deg, #0E6B5C 0%, #0A4A40 100%);
+    box-shadow: 0 40px 80px -40px rgba(14, 107, 92, .7); isolation: isolate; }
+  .stage__car { position: absolute; inset: auto 6% 14% 6%; z-index: 2; }
+  .stage__floor { position: absolute; inset: auto 0 0; height: 22%; background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0)); border-top: 1px solid rgba(255,255,255,.18); }
+  .stage__shine { position: absolute; inset: 0; z-index: 3; background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.4) 50%, transparent 60%); transform: translateX(-120%); animation: shine 4.5s var(--e) infinite; mix-blend-mode: soft-light; }
+  @keyframes shine { 0%, 30% { transform: translateX(-120%); } 70%, 100% { transform: translateX(120%); } }
+  .bub { position: absolute; z-index: 1; border-radius: 50%; background: radial-gradient(circle at 32% 30%, rgba(255,255,255,.9), rgba(255,255,255,.18) 38%, rgba(255,255,255,.05) 70%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.35); animation: float 7s ease-in-out infinite; }
+  .bub:nth-child(1) { width: 70px; height: 70px; left: 8%; top: 12%; }
+  .bub:nth-child(2) { width: 34px; height: 34px; left: 30%; top: 30%; animation-delay: -2s; }
+  .bub:nth-child(3) { width: 52px; height: 52px; right: 12%; top: 10%; animation-delay: -4s; }
+  .bub:nth-child(4) { width: 22px; height: 22px; right: 30%; top: 36%; animation-delay: -1s; }
+  .bub:nth-child(5) { width: 40px; height: 40px; left: 54%; top: 6%; animation-delay: -5s; }
+  @keyframes float { 50% { transform: translateY(-14px) scale(1.04); } }
+  .stage__badge { position: absolute; z-index: 4; inset-inline-start: 18px; top: 18px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.92); color: var(--ink); font-size: .84rem; font-weight: 600; box-shadow: 0 10px 30px -12px rgba(0,0,0,.35); }
+  .stage__badge b { color: var(--teal); font-size: 1.1rem; }
+
+  .offer { padding-block: 6px 0; }
+  .offer__in { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 20px; background: var(--ink); color: #F7F5F0; }
+  .offer__in i { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--sun); color: var(--ink); font-style: normal; font-weight: 800; }
+  .offer__in i svg { width: 20px; height: 20px; }
+  .offer [data-mamar-offer] { font-weight: 700; font-size: clamp(1rem, .95rem + .4vw, 1.2rem); }
+  .offer__more { margin-inline-start: auto; flex: none; color: var(--mint); font-weight: 600; font-size: .9rem; text-decoration: none; display: none; }
+  @media (min-width: 640px) { .offer__more { display: inline; } }
+
+  section.blk { padding-block: clamp(56px, 8vw, 104px); }
+  .head { display: grid; gap: 10px; max-width: 620px; margin-bottom: clamp(26px, 4vw, 44px); }
+  .kicker { color: var(--teal); font-weight: 700; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; }
+  html[lang="ar"] .kicker { letter-spacing: 0; font-size: .95rem; }
+  h2 { margin: 0; font-weight: 800; font-size: clamp(1.9rem, 1.4rem + 2.4vw, 3.1rem); line-height: 1.08; letter-spacing: -.035em; text-wrap: balance; }
+  html[lang="ar"] h2 { line-height: 1.35; letter-spacing: 0; }
+  .sub { margin: 0; color: var(--ink2); }
+
+  .ways { display: grid; gap: 14px; }
+  @media (min-width: 760px) { .ways { grid-template-columns: 1fr 1fr; } }
+  .way { position: relative; display: grid; gap: 14px; padding: 26px; border-radius: var(--r); background: var(--card); box-shadow: 0 0 0 1px var(--line) inset, 0 20px 40px -30px rgba(20,32,29,.35); overflow: hidden; }
+  .way__icon { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; background: var(--foam); color: var(--teal); }
+  .way__icon svg { width: 28px; height: 28px; }
+  .way h3 { margin: 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; }
+  .way p { margin: 0; color: var(--ink2); }
+  .way ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; color: var(--mut); font-size: .92rem; }
+  .way ul li::before { content: '—'; color: var(--teal); margin-inline-end: 8px; }
+  .way .btn { justify-self: start; }
+  .way--home { background: linear-gradient(160deg, #10302A, #0E6B5C); color: #EFF7F4; box-shadow: none; }
+  .way--home p, .way--home ul { color: rgba(239, 247, 244, .78); }
+  .way--home .way__icon { background: rgba(255,255,255,.12); color: #fff; }
+  .way--home ul li::before { color: var(--mint); }
+  .way--home .btn { background: #fff; color: var(--teal2); box-shadow: none; }
+  .way__fee { position: absolute; inset-inline-end: 22px; top: 22px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.14); font-size: .82rem; font-weight: 700; }
+
+  .menu { display: grid; gap: 28px; }
+  @media (min-width: 920px) { .menu { grid-template-columns: .85fr 1.4fr; align-items: start; } }
+  .card { padding: 8px 26px; border-radius: var(--r); background: var(--card); box-shadow: 0 0 0 1px var(--line) inset, 0 24px 50px -36px rgba(20,32,29,.4); }
+  .prices { --mamar-accent: var(--teal); --mamar-accent-ink: #fff; --mamar-line: var(--line); --mamar-muted: var(--mut); --mamar-radius: 12px; min-height: 280px; }
+  .prices .mamar-prices__group { padding-block: 14px; }
+  .prices .mamar-prices__group + .mamar-prices__group { margin-top: 0; border-top: 1px solid var(--line); }
+  .prices .mamar-prices__title { color: var(--teal); letter-spacing: .14em; margin-bottom: 4px; }
+  html[lang="ar"] .prices .mamar-prices__title { letter-spacing: 0; font-size: .9rem; }
+  .prices .mamar-prices__item:first-child { border-top: 0; }
+  .prices .mamar-prices__name { font-weight: 700; }
+  .prices .mamar-prices__price { font-weight: 800; color: var(--ink); }
+  .prices .mamar-prices__book { background: var(--foam); border-color: transparent; color: var(--teal2); font-weight: 700; }
+  .prices .mamar-prices__book:hover { background: var(--teal); color: #fff; }
+  .note { display: flex; gap: 12px; align-items: flex-start; margin-top: 14px; padding: 16px 18px; border-radius: 18px; background: var(--foam); color: var(--ink2); font-size: .92rem; }
+  .note svg { width: 20px; height: 20px; flex: none; color: var(--teal); margin-top: .2em; }
+  .loading { display: grid; gap: 10px; padding-block: 14px; }
+  .loading i { display: block; height: 58px; border-radius: 14px; background: linear-gradient(90deg, #F1EEE8, #E7E3DB, #F1EEE8) 0 0 / 200% 100%; animation: sh 1.4s ease-in-out infinite; }
+  @keyframes sh { to { background-position: -200% 0; } }
+
+  .gal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (min-width: 900px) { .gal { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .tile { position: relative; margin: 0; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; display: grid; place-items: center; }
+  .tile figcaption { position: absolute; inset-inline-start: 14px; bottom: 12px; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.88); font-size: .78rem; font-weight: 700; color: var(--ink); }
+  .g1 { background: radial-gradient(circle at 30% 30%, #fff 0 9%, transparent 10%), radial-gradient(circle at 62% 40%, #fff 0 6%, transparent 7%), radial-gradient(circle at 45% 70%, #fff 0 12%, transparent 13%), radial-gradient(circle at 78% 72%, #fff 0 5%, transparent 6%), linear-gradient(150deg, #BFE4DA, #7CC4B2); }
+  .g2 { background: radial-gradient(60% 60% at 40% 35%, #2E8C78, #0A4A40); }
+  .g2 span { width: 34%; aspect-ratio: 3 / 4; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,.25) 30%, rgba(255,255,255,.08) 70%); box-shadow: inset 0 -8px 16px rgba(255,255,255,.2), 0 20px 30px -10px rgba(0,0,0,.35); transform: rotate(-8deg); }
+  .g3 { background: linear-gradient(115deg, #1A2B27 0 40%, #3E6A60 48%, #EAF6F2 50%, #3E6A60 52%, #1A2B27 60%); background-size: 260% 100%; animation: sweep 5s ease-in-out infinite; }
+  @keyframes sweep { 0%, 20% { background-position: 100% 0; } 80%, 100% { background-position: 0 0; } }
+  .g4 { background: repeating-radial-gradient(circle at 50% 50%, #1D2321 0 6px, #2B3331 6px 9px, #1D2321 9px 22px), #1D2321; }
+  .g4 span { width: 40%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #C9D2CF 0 18%, #7B8784 19% 24%, #C9D2CF 25% 30%, #59625F 31%); box-shadow: 0 0 0 10px #101413; }
+  .g5 { background: repeating-linear-gradient(90deg, #E9E3D8 0 36px, #DCD4C6 36px 38px), #E9E3D8; }
+  .g5 span { width: 70%; height: 46%; border-radius: 26px; border: 2px dashed rgba(14, 107, 92, .55); background: rgba(255,255,255,.35); }
+  .g6 { background: conic-gradient(from 200deg at 60% 40%, #0E6B5C, #7CC4B2, #EAF6F2, #0E6B5C, #10302A, #0E6B5C); }
+  .g6 span { width: 56%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.75), transparent 45%); mix-blend-mode: screen; }
+
+  .two { display: grid; gap: 22px; }
+  @media (min-width: 900px) { .two { grid-template-columns: 1fr 1fr; } }
+  .hours { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .hours th, .hours td { padding: 13px 0; border-bottom: 1px solid var(--line); font-weight: 500; text-align: start; }
+  .hours td { text-align: end; color: var(--ink2); }
+  .hours td small { display: block; color: var(--mut); font-size: .8rem; }
+  .hours tr.is-today th, .hours tr.is-today td { color: var(--teal); font-weight: 700; }
+  .map { border-radius: var(--r); overflow: hidden; box-shadow: 0 0 0 1px var(--line) inset; aspect-ratio: 4 / 3; background: #EEF0EA; }
+  .map svg { width: 100%; height: 100%; }
+  .addr { margin-top: 18px; display: grid; gap: 4px; }
+  .addr b { font-size: 1.2rem; font-weight: 800; }
+  .addr span { color: var(--mut); }
+  .addr .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+  footer { padding-block: 36px calc(110px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); color: var(--mut); font-size: .88rem; }
+  @media (min-width: 860px) { footer { padding-bottom: 44px; } }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+  .demo-note { display: inline-flex; padding: 8px 14px; border-radius: 999px; border: 1px dashed var(--line2); color: var(--ink2); background: var(--card); }
+  .madeby { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+  .madeby svg { width: 16px; height: 16px; fill: none; stroke: #FF4A2B; stroke-width: 2.4; stroke-linecap: round; }
+  .madeby:hover { color: var(--ink); }
+  .dock { position: fixed; inset-inline: 10px; bottom: max(10px, env(safe-area-inset-bottom)); z-index: 30; display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 22px; background: rgba(20, 32, 29, .92); color: #F7F5F0; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 20px 40px -16px rgba(20,32,29,.6); }
+  html[dir="rtl"] .dock { padding: 10px 16px 10px 10px; }
+  .dock__t { flex: 1; min-width: 0; margin: 0; font-size: .8rem; line-height: 1.35; color: rgba(247,245,240,.7); }
+  .dock__t b { display: block; color: #fff; font-size: .95rem; }
+  .dock .btn { background: #fff; color: var(--teal2); box-shadow: none; }
+  @media (min-width: 860px) { .dock { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .stage__shine, .bub, .g3, .loading i { animation: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#services"><span class="ar">تخطَّ إلى الأسعار</span><span class="en">Skip to prices</span></a>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#top" aria-label="Lamaa Car Spa · لمعة">
+      <i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.3 6 7.6 6 10.8a6 6 0 0 1-12 0C6 10.6 8.5 7.3 12 3z" fill="#F7F5F0"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.6 2.4" fill="none" stroke="#0E6B5C" stroke-width="1.6" stroke-linecap="round"/></svg></i>
+      <span><b><span class="ar">لمعة</span><span class="en">Lamaa</span></b><small><span class="ar">عناية بالسيارات</span><span class="en">CAR SPA</span></small></span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#ways"><span class="ar">في المحل أو عندك</span><span class="en">Bay or home</span></a>
+      <a href="#services"><span class="ar">الأسعار</span><span class="en">Prices</span></a>
+      <a href="#hours"><span class="ar">الأوقات</span><span class="en">Hours</span></a>
+    </nav>
+    <div class="top__end">
+      <button class="lang" id="lang" type="button">EN</button>
+      <button class="btn btn--sm" type="button" data-mamar-book><span class="ar">احجز غسيلك</span><span class="en">Book a wash</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div>
+        <span class="chip"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4.5 16.5V13l1.8-4.6A2 2 0 0 1 8.2 7h7.6a2 2 0 0 1 1.9 1.4L19.5 13v3.5M4.5 13h15"/></svg></i><span class="ar">نأتيك إلى باب بيتك أيضاً</span><span class="en">We also come to your door</span></span>
+        <h1><span class="ar">سيارتك <span class="hl">تلمع</span> كأنها جديدة.</span><span class="en">Care that makes it <span class="hl">shine</span> like new.</span></h1>
+        <p class="lede"><span class="ar">غسيل يدوي، وتنظيف عميق، وحماية سيراميك. احجز موعدك في المغسلة أو اطلب الفريق المتنقل إلى منزلك، وثبّت الموعد بعربون بسيط.</span><span class="en">Hand washes, deep cleans and ceramic protection. Book a bay, or send our mobile team to your home — a small deposit holds your time.</span></p>
+        <div class="hero__cta">
+          <button class="btn" type="button" data-mamar-book>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg>
+            <span class="ar">احجز غسيلك</span><span class="en">Book a wash</span>
+          </button>
+          <button class="btn btn--soft" type="button" data-mamar-book="5d000000-0000-4000-8000-000000000015"><span class="ar">غسيل عند منزلك</span><span class="en">Wash at my home</span></button>
+        </div>
+        <ul class="perks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg><span class="ar">مواد آمنة على الطلاء</span><span class="en">Paint-safe products</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg><span class="ar">ثلاث مغاسل، بلا طوابير</span><span class="en">Three bays, no queues</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg><span class="ar">عربون ٢٥٪ فقط</span><span class="en">Just a 25% deposit</span></li>
+        </ul>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <span class="bub"></span><span class="bub"></span><span class="bub"></span><span class="bub"></span><span class="bub"></span>
+        <div class="stage__floor"></div>
+        <svg class="stage__car" viewBox="0 0 400 150">
+          <ellipse cx="200" cy="138" rx="170" ry="8" fill="rgba(0,0,0,.25)"/>
+          <path d="M28 112c0-14 6-24 22-28l40-10c18-24 40-40 82-42h62c34 0 56 14 78 38l38 8c16 4 26 14 26 30v8c0 6-4 10-10 10H38c-6 0-10-4-10-10z" fill="#F7F5F0"/>
+          <path d="M104 74c16-20 34-30 66-32h52c26 0 42 10 58 32z" fill="#0A4A40" opacity=".9"/>
+          <path d="M196 42v32" stroke="#F7F5F0" stroke-width="4"/>
+          <path d="M40 100h40M320 98h38" stroke="#CDEBE3" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="104" cy="122" r="22" fill="#14201D"/><circle cx="104" cy="122" r="10" fill="#C9D2CF"/>
+          <circle cx="300" cy="122" r="22" fill="#14201D"/><circle cx="300" cy="122" r="10" fill="#C9D2CF"/>
+          <path d="M60 92c80-6 200-6 300 2" stroke="rgba(14,107,92,.25)" stroke-width="2" fill="none"/>
+        </svg>
+        <div class="stage__shine"></div>
+        <div class="stage__badge"><b><span class="ar">٧٥ د</span><span class="en">75′</span></b><span><span class="ar">غسيل كامل عند منزلك</span><span class="en">full wash at your home</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="offer">
+    <div class="wrap">
+      <div class="offer__in">
+        <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 4c.6 3.9 2.1 5.4 6 6-3.9.6-5.4 2.1-6 6-.6-3.9-2.1-5.4-6-6 3.9-.6 5.4-2.1 6-6z"/></svg></i>
+        <span data-mamar-offer aria-live="polite"></span>
+        <a class="offer__more" href="#services"><span class="ar">الأسعار ←</span><span class="en">See prices →</span></a>
+      </div>
+    </div>
+  </div>
+
+  <section class="blk" id="ways">
+    <div class="wrap">
+      <div class="head">
+        <span class="kicker"><span class="ar">طريقتان للّمعة</span><span class="en">Two ways to shine</span></span>
+        <h2><span class="ar">في مغسلتنا، أو أمام بيتك.</span><span class="en">At our bays, or right outside your home.</span></h2>
+      </div>
+      <div class="ways">
+        <article class="way">
+          <span class="way__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20V9l8.5-5 8.5 5v11M7.5 20v-6h9v6M7.5 17h9"/></svg></span>
+          <h3><span class="ar">في المغسلة</span><span class="en">At the bays</span></h3>
+          <p><span class="ar">ثلاث مغاسل مظللة على طريق الأمير سلطان. قهوة وانتظار مريح، أو اترك السيارة وعد لاحقاً.</span><span class="en">Three shaded bays on Prince Sultan Road. Coffee while you wait, or drop the keys and come back later.</span></p>
+          <ul><li><span class="ar">من ٣٥ ر.س</span><span class="en">From 35 SAR</span></li><li><span class="ar">تلميع وسيراميك</span><span class="en">Polish and ceramic coat</span></li></ul>
+          <button class="btn" type="button" data-mamar-book><span class="ar">احجز مغسلة</span><span class="en">Book a bay</span></button>
+        </article>
+        <article class="way way--home">
+          <span class="way__fee"><span class="ar">+٣٠ ر.س زيارة</span><span class="en">+30 SAR visit</span></span>
+          <span class="way__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 16.5V7.5h11v9M13.5 10.5h4l3 3.5v2.5h-7"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="16.5" cy="17" r="1.8"/></svg></span>
+          <h3><span class="ar">عند منزلك</span><span class="en">At your home</span></h3>
+          <p><span class="ar">فريقنا المتنقل يأتيك بالماء والكهرباء. حدّد موقعك على الخريطة واختر الوقت.</span><span class="en">Our mobile team brings the water and the power. Drop a pin on the map and pick a time.</span></p>
+          <ul><li><span class="ar">غسيل كامل خلال ٧٥ دقيقة</span><span class="en">A full wash in 75 minutes</span></li><li><span class="ar">بلا أي تجهيز منك</span><span class="en">Nothing to prepare</span></li></ul>
+          <button class="btn" type="button" data-mamar-book="5d000000-0000-4000-8000-000000000015"><span class="ar">اطلب الفريق المتنقل</span><span class="en">Book the mobile team</span></button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="services" style="padding-top:0">
+    <div class="wrap menu">
+      <div class="head">
+        <span class="kicker"><span class="ar">الأسعار</span><span class="en">Prices</span></span>
+        <h2><span class="ar">واضحة، وشاملة الضريبة.</span><span class="en">Clear, with VAT included.</span></h2>
+        <p class="sub"><span class="ar">تتحدّث القائمة تلقائياً مع أي عرض أو تغيير في السعر.</span><span class="en">This list updates itself with every offer or price change.</span></p>
+        <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg><span><span class="ar">نثبّت موعدك بعربون ٢٥٪ تدفعه بأمان عند الحجز، والباقي في المحل.</span><span class="en">A 25% deposit, paid securely when you book, holds your time. The rest is paid on the day.</span></span></p>
+      </div>
+      <div class="card">
+        <div class="prices" data-mamar-prices aria-busy="true"><div class="loading" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <span class="kicker"><span class="ar">من أعمالنا</span><span class="en">The details</span></span>
+        <h2><span class="ar">لمعة تراها من بعيد.</span><span class="en">A shine you can see from across the street.</span></h2>
+      </div>
+      <div class="gal">
+        <figure class="tile g1"><figcaption><span class="ar">رغوة الغسيل اليدوي</span><span class="en">Hand-wash foam</span></figcaption></figure>
+        <figure class="tile g2"><span></span><figcaption><span class="ar">طبقة طاردة للماء</span><span class="en">Water beading</span></figcaption></figure>
+        <figure class="tile g3"><figcaption><span class="ar">تلميع على مرحلتين</span><span class="en">Two-stage polish</span></figcaption></figure>
+        <figure class="tile g4"><span></span><figcaption><span class="ar">الإطارات والجنوط</span><span class="en">Tyres &amp; rims</span></figcaption></figure>
+        <figure class="tile g5"><span></span><figcaption><span class="ar">مقاعد بالبخار</span><span class="en">Steam-clean seats</span></figcaption></figure>
+        <figure class="tile g6"><span></span><figcaption><span class="ar">حماية سيراميك</span><span class="en">Ceramic coat</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="hours" style="padding-top:0">
+    <div class="wrap two">
+      <div class="card" style="padding:26px">
+        <div class="head" style="margin-bottom:12px"><span class="kicker"><span class="ar">الأوقات</span><span class="en">Hours</span></span><h2><span class="ar">فترتان كل يوم.</span><span class="en">Two shifts a day.</span></h2></div>
+        <table class="hours">
+          <caption class="sr"><span class="ar">أوقات العمل</span><span class="en">Opening hours</span></caption>
+          <tbody>
+            <tr data-wd="6"><th scope="row"><span class="ar">السبت – الخميس</span><span class="en">Saturday – Thursday</span></th><td><span class="ar">٨:٠٠ ص – ١٢:٠٠ م</span><span class="en">8:00 AM – 12:00 PM</span><small><span class="ar">ثم ٤:٠٠ م – ١١:٠٠ م</span><span class="en">then 4:00 PM – 11:00 PM</span></small></td></tr>
+            <tr data-wd="5"><th scope="row"><span class="ar">الجمعة</span><span class="en">Friday</span></th><td><span class="ar">٤:٠٠ م – ١١:٠٠ م</span><span class="en">4:00 PM – 11:00 PM</span></td></tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15.5 4.6A8 8 0 1 0 19.4 16a6.5 6.5 0 0 1-3.9-11.4z"/></svg><span><span class="ar">نتوقف ٢٠ دقيقة عند كل صلاة، ونظام الحجز يراعي ذلك تلقائياً.</span><span class="en">We pause 20 minutes for each prayer — the booking system already knows.</span></span></p>
+      </div>
+      <div>
+        <div class="map" aria-hidden="true">
+          <svg viewBox="0 0 400 300">
+            <rect width="400" height="300" fill="#EEF0EA"/>
+            <path d="M0 0h90c-10 50 14 80-4 130s16 100-6 170H0z" fill="#CFE6EC"/>
+            <g stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"><path d="M120 -10 160 310"/><path d="M80 150h330"/></g>
+            <g stroke="#FFFFFF" stroke-width="6" fill="none"><path d="M100 70h300M100 230h300M240 0v300M330 0v300"/></g>
+            <g fill="#E2E6DE"><rect x="176" y="86" width="50" height="50" rx="6"/><rect x="254" y="166" width="62" height="48" rx="6"/><rect x="176" y="166" width="50" height="48" rx="6"/><rect x="254" y="86" width="62" height="50" rx="6"/></g>
+            <circle cx="200" cy="150" r="38" fill="rgba(14,107,92,.12)"/>
+            <path d="M200 168s-20-17-20-33a20 20 0 0 1 40 0c0 16-20 33-20 33z" fill="#0E6B5C"/>
+            <circle cx="200" cy="135" r="7" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="addr">
+          <b><span class="ar">طريق الأمير سلطان، جدة</span><span class="en">Prince Sultan Road, Jeddah</span></b>
+          <span><span class="ar">مدخل من الطريق الخدمي، مظلّل بالكامل.</span><span class="en">Enter from the service road — fully shaded.</span></span>
+          <div class="btns">
+            <button class="btn" type="button" data-mamar-book><span class="ar">احجز غسيلك</span><span class="en">Book a wash</span></button>
+            <a class="btn btn--soft" href="https://www.google.com/maps/search/?api=1&amp;query=Prince%20Sultan%20Rd%2C%20Jeddah" target="_blank" rel="noopener"><span class="ar">الاتجاهات</span><span class="en">Directions</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="demo-note"><span class="ar">موقع تجريبي — نشاط وهمي صُمّم لعرض نظام حجز ممر</span><span class="en">Demo site — a fictional business made to show Mamar Booking</span></span>
+    <a class="madeby" href="https://mamar.site" target="_blank" rel="noopener"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M6 28V14a11 11 0 0 1 22 0v14"/><path d="M12.5 28V14.5a4.5 4.5 0 0 1 9 0V28"/></svg><span class="ar">صُنع بواسطة ممر</span><span class="en">Made by Mamar</span></a>
+  </div>
+</footer>
+
+<div class="dock">
+  <p class="dock__t"><b><span class="ar">لمعة لغسيل السيارات</span><span class="en">Lamaa Car Spa</span></b><span class="ar">في المغسلة أو عند منزلك</span><span class="en">At our bays or at your home</span></p>
+  <button class="btn btn--sm" type="button" data-mamar-book><span class="ar">احجز</span><span class="en">Book</span></button>
+</div>
+
+<script src="/book/embed.js" data-business="lamaa-carwash" defer></script>
+<script>
+  (function () {
+    var H = document.documentElement, btn = document.getElementById('lang');
+    var titles = { ar: 'لمعة لغسيل السيارات · موقع تجريبي', en: 'Lamaa Car Spa · Demo site' };
+    function paint() {
+      var l = H.lang === 'en' ? 'en' : 'ar';
+      btn.textContent = l === 'ar' ? 'EN' : 'ع';
+      btn.setAttribute('aria-label', l === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
+      document.title = titles[l];
+      var wd = new Date(Date.now() + 3 * 3600e3).getUTCDay();
+      document.querySelectorAll('.hours tr').forEach(function (r) { r.classList.toggle('is-today', (+r.getAttribute('data-wd') === 5) === (wd === 5)); });
+    }
+    btn.addEventListener('click', function () {
+      var n = H.lang === 'en' ? 'ar' : 'en';
+      H.lang = n; H.dir = n === 'ar' ? 'rtl' : 'ltr';
+      try { localStorage.setItem('mamar-lang', n); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+</script>
+</body>
+</html>

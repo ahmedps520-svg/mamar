@@ -1,0 +1,9 @@
+{
+  "_note": "LOCAL-ONLY logins for the dev server (fictional demo owners + a local admin). Never used on mamar.site: there, Ahmed creates real accounts in Supabase.",
+  "users": [
+    { "email": "ahmed@mamar.local", "password": "mamar-local-admin", "admin": true },
+    { "email": "ward@owners.mamar.site", "password": "demo-owner-1", "businesses": ["ward-barber"] },
+    { "email": "lamaa@owners.mamar.site", "password": "demo-owner-2", "businesses": ["lamaa-carwash"] },
+    { "email": "sura@owners.mamar.site", "password": "demo-owner-3", "businesses": ["sura-karting"] }
+  ]
+}

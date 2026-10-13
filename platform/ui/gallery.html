@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="signature">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#08090B">
+<meta name="robots" content="noindex">
+<title>Mamar Booking — UI kit</title>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="kit.css">
+<script>
+  /* Set the language before first paint so there is no RTL/LTR flash. */
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = q || localStorage.getItem('mamar-lang');
+    if (l === 'en') { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; }
+  } catch (e) {}
+</script>
+<style>
+  /* Gallery-only layout. Components come from kit.css. */
+  .g-wrap { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: var(--b-gutter); }
+  .g-head { position: relative; display: flex; align-items: center; gap: var(--b-s-3); padding-block: var(--b-s-4); }
+  .g-brand { display: flex; align-items: center; gap: 10px; color: var(--b-ink); text-decoration: none; }
+  .g-brand svg { width: 22px; height: 22px; fill: none; stroke: var(--b-accent-text); stroke-width: 2.4; stroke-linecap: round; }
+  .g-brand b { font-family: var(--b-font-d); font-weight: var(--b-display-weight); font-size: calc(var(--b-t-xl) * var(--b-d-scale) * 1.05); line-height: 1; letter-spacing: var(--b-display-track); }
+  .g-brand span { font-family: var(--b-font-m); font-size: var(--b-t-2xs); letter-spacing: .14em; text-transform: uppercase; color: var(--b-mut); padding-inline-start: 10px; border-inline-start: 1px solid var(--b-line-2); line-height: 1.2; }
+  .g-head .b-lang { margin-inline-start: auto; }
+
+  .g-hero { padding-block: clamp(24px, 6vw, 72px) clamp(28px, 4vw, 48px); display: flex; flex-direction: column; gap: var(--b-s-4); }
+  .g-hero .b-display { max-width: 15ch; }
+  .g-hero .b-lede { max-width: 58ch; }
+  .g-themes { display: flex; flex-direction: column; gap: var(--b-s-2); margin-top: var(--b-s-3); }
+  .g-themes .b-seg { align-self: flex-start; }
+
+  .g-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(40px, 6vw, 72px); padding-bottom: var(--b-section); }
+  .g-grid > *, .g-cols > *, .g-demo > * { min-width: 0; }
+  @media (min-width: 1000px) {
+    .g-grid { grid-template-columns: 404px minmax(0, 1fr); align-items: start; }
+    .g-device { position: sticky; top: 24px; }
+    .g-device__scroll { height: min(820px, calc(100vh - 48px)); overflow-y: auto; scrollbar-width: none; }
+    .g-device__scroll::-webkit-scrollbar { display: none; }
+  }
+  .g-device {
+    position: relative;
+    border: 1px solid var(--b-line-2);
+    border-radius: 36px;
+    background: var(--b-bg);
+    box-shadow: var(--b-shadow-3);
+    overflow: clip;
+    --b-gutter: 20px;
+  }
+  @media (max-width: 999px) { .g-device { border-radius: var(--b-radius-lg); margin-inline: calc(var(--b-gutter) * -0.5); } }
+  .g-device .b-topbar { background: var(--b-glass); }
+  .g-device__progress { padding: 0 var(--b-gutter) 4px; display: flex; justify-content: center; }
+  .g-device .b-step { min-height: 520px; }
+  .g-device .b-summary { border-radius: 0; }
+
+  .g-sec { padding-block: clamp(36px, 5vw, 56px); border-top: 1px solid var(--b-line); display: flex; flex-direction: column; gap: var(--b-s-6); }
+  .g-sec:first-child { border-top: 0; padding-top: 0; }
+  .g-sec__head { display: flex; flex-direction: column; gap: var(--b-s-2); }
+  .g-sec__head .b-h2 { font-size: calc(var(--b-t-2xl) * var(--b-d-scale) * .9); }
+  .g-label { font-family: var(--b-font-m); font-size: var(--b-t-2xs); letter-spacing: .12em; text-transform: uppercase; color: var(--b-mut); margin-bottom: var(--b-s-3); }
+  html[lang="ar"] .g-label { font-family: var(--b-font-b); font-size: var(--b-t-xs); letter-spacing: 0; }
+  .g-demo { display: flex; flex-direction: column; gap: var(--b-s-3); }
+  .g-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--b-s-7); }
+  @media (min-width: 720px) { .g-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .g-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--b-s-3); }
+  .g-sw { display: flex; flex-direction: column; gap: 8px; }
+  .g-sw i { display: block; height: 56px; border-radius: var(--b-radius); border: 1px solid var(--b-line); }
+  .g-sw b { font-weight: 500; font-size: var(--b-t-sm); }
+  .g-sw code { font-family: var(--b-font-m); font-size: var(--b-t-2xs); color: var(--b-mut); direction: ltr; text-align: start; }
+  .g-spec { display: flex; flex-direction: column; gap: var(--b-s-5); }
+  .g-spec > div { display: grid; gap: 6px; }
+  .g-spec code { font-family: var(--b-font-m); font-size: var(--b-t-2xs); color: var(--b-mut); direction: ltr; justify-self: start; }
+  .g-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--b-s-3); padding-block: var(--b-s-7) max(var(--b-s-7), env(safe-area-inset-bottom)); border-top: 1px solid var(--b-line); color: var(--b-mut); font-size: var(--b-t-sm); }
+  .g-tl-head { display: flex; align-items: center; justify-content: space-between; gap: var(--b-s-3); flex-wrap: wrap; }
+  .g-tl-head .b-h3 { font-size: calc(var(--b-t-xl) * var(--b-d-scale)); }
+</style>
+</head>
+<body class="b-app">
+<div class="b-grain" aria-hidden="true"></div>
+
+<div class="g-wrap">
+  <header class="g-head">
+    <a class="g-brand" href="./gallery.html">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M6 28V14a11 11 0 0 1 22 0v14"/><path d="M12.5 28V14.5a4.5 4.5 0 0 1 9 0V28"/></svg>
+      <b data-i18n="g.brand">ممر</b>
+      <span>Booking kit</span>
+    </a>
+    <button class="b-lang" type="button" data-lang-toggle>EN</button>
+  </header>
+
+  <section class="g-hero">
+    <span class="b-eyebrow" data-i18n="g.kicker"></span>
+    <h1 class="b-display" data-i18n="g.title"></h1>
+    <p class="b-lede" data-i18n="g.lede"></p>
+    <div class="g-themes">
+      <span class="g-label" data-i18n="g.theme"></span>
+      <div class="b-seg" id="themeSeg" role="radiogroup"></div>
+    </div>
+  </section>
+
+  <div class="g-grid">
+    <!-- Concierge mock -->
+    <div class="g-device" id="device">
+      <div class="g-device__scroll" id="deviceScroll">
+        <header class="b-topbar" id="devBar">
+          <div class="b-topbar__start"><button class="b-iconbtn" id="devBack" type="button"></button></div>
+          <div class="b-topbar__title"><span data-i18n="g.biz"></span><small data-i18n="g.biz_sub"></small></div>
+          <div class="b-topbar__end"><button class="b-lang" type="button" data-lang-toggle>EN</button></div>
+        </header>
+        <div class="g-device__progress"><div class="b-dots" id="devDots" aria-hidden="true"></div></div>
+        <div class="b-shell"><div class="b-stage" id="stage"></div></div>
+        <div class="b-summary" id="summary">
+          <div class="b-summary__in">
+            <div class="b-summary__text">
+              <span class="b-summary__label" data-i18n="total"></span>
+              <span class="b-summary__sub" id="sumSub"></span>
+            </div>
+            <strong class="b-summary__total" id="sumTotal" aria-live="polite"></strong>
+            <button class="b-btn b-btn--primary b-summary__cta" id="sumCta" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalogue -->
+    <main id="catalogue"></main>
+  </div>
+
+  <footer class="g-foot">
+    <span data-i18n="g.footer"></span>
+    <span id="madeBy"></span>
+  </footer>
+</div>
+
+<script type="module">
+import { lang, onLang, register, t, tn, boot } from '../i18n.js';
+import {
+  h, $, $$, toast, sheet, confirmDialog, haptic, animateNumber, stepTransition,
+  skeleton, icon, selectable, madeBy,
+} from './kit.js';
+import {
+  money, plusMoney, included, num, digits, durationMin, dateLong, weekday, time,
+  hijriShort, monthYear, hijriMonthYear, riyadhDateISO, riyadhParts, addDaysISO,
+  normalizePhone, formatPhone,
+} from '../fmt.js';
+import { prayerTimes } from '../prayer.js';
+import { applyTheme } from '../theme.js';
+
+/* ---------- gallery strings ---------- */
+register({
+  ar: {
+    'g.brand': 'ممر',
+    'g.kicker': 'الأساس · الإصدار الأول',
+    'g.title': 'مكوّنات الحجز',
+    'g.lede': 'العناصر المشتركة خلف كل صفحات الحجز: رحلة العميل، ولوحة صاحب النشاط، ولوحة الإدارة. كل ما هنا مبني على رموز التصميم، فتتبدّل الهوية كاملةً بتبديل السمة.',
+    'g.theme': 'السمة',
+    'g.th.signature': 'ممر الداكن',
+    'g.th.light': 'ممر الفاتح',
+    'g.th.a': 'مغسلة',
+    'g.th.b': 'كارتينج',
+    'g.biz': 'مرسى للعناية بالسيارات',
+    'g.biz_sub': 'جدة · الشاطئ',
+    'g.q1': 'كيف نخدمك اليوم؟',
+    'g.q1_hint': 'اختر خدمة واحدة، ويمكنك إضافة المزيد في الخطوة التالية.',
+    'g.q2': 'متى يناسبك؟',
+    'g.q2_hint': 'المواعيد بتوقيت جدة، وأوقات الصلاة مغلقة تلقائياً.',
+    'g.s1.title': 'غسيل يدوي فاخر',
+    'g.s1.meta': 'خارجي وداخلي',
+    'g.s2.title': 'تلميع وحماية نانو سيراميك',
+    'g.s2.meta': 'حماية تدوم ١٢ شهراً',
+    'g.s3.title': 'تنظيف داخلي عميق',
+    'g.s3.meta': 'تنظيف المقاعد بالبخار وتعقيمها',
+    'g.s4.title': 'تظليل حراري',
+    'g.s4.meta': 'غير متاح هذا الأسبوع',
+    'g.offer_badge': 'عرض هذا الأسبوع',
+    'g.pick_service': 'اختر خدمة للمتابعة',
+    'g.pick_time': 'اختر الوقت المناسب',
+    'g.addon1': 'تعطير المقصورة',
+    'g.addon2': 'تلميع الجنوط',
+    'g.cars': 'عدد السيارات',
+    'g.sec.buttons': 'الأزرار',
+    'g.sec.choices': 'بطاقات الاختيار',
+    'g.sec.controls': 'عناصر التحكم',
+    'g.sec.fields': 'الحقول',
+    'g.sec.datetime': 'التاريخ والوقت',
+    'g.sec.progress': 'التقدّم',
+    'g.sec.feedback': 'التنبيهات والنوافذ',
+    'g.sec.owner': 'لوحة صاحب النشاط',
+    'g.sec.type': 'الخطوط والألوان',
+    'g.d.buttons': 'زر أساسي واحد في كل شاشة، والبقية هادئة.',
+    'g.d.choices': 'بطاقات كبيرة سهلة اللمس: العنوان، وسطر التفاصيل، والسعر في الطرف.',
+    'g.d.controls': 'مقاطع، ورقائق تصفية، ومفتاح تشغيل، وعدّاد.',
+    'g.d.fields': 'عناوين عائمة، ورسائل خطأ واضحة، والأرقام تُكتب من اليسار.',
+    'g.d.datetime': 'شريط أيام بالتاريخين الميلادي والهجري، وشبكة مواعيد تحترم أوقات الصلاة.',
+    'g.d.progress': 'شريط ونقاط لخطوات الحجز.',
+    'g.d.feedback': 'رسائل قصيرة، ونافذة سفلية، وتأكيد، وهياكل تحميل، وحالة فارغة.',
+    'g.d.owner': 'مؤشرات اليوم، والجدول الزمني، والقوائم، وحالات الحجز.',
+    'g.d.type': 'السلّم الطباعي ورموز الألوان للسمة الحالية.',
+    'g.l.variants': 'الأنواع',
+    'g.l.sizes': 'الأحجام',
+    'g.l.states': 'الحالات',
+    'g.l.addons': 'إضافات',
+    'g.l.media': 'مع صورة',
+    'g.l.seg': 'مقاطع',
+    'g.l.chips': 'رقائق',
+    'g.l.switch': 'مفتاح',
+    'g.l.stepper': 'عدّاد',
+    'g.l.pills': 'حالات الحجز',
+    'g.l.stats': 'مؤشرات',
+    'g.l.rows': 'قوائم',
+    'g.l.toasts': 'رسائل',
+    'g.l.overlays': 'نوافذ',
+    'g.l.skeleton': 'تحميل',
+    'g.l.empty': 'حالة فارغة',
+    'g.l.type': 'الخطوط',
+    'g.l.colors': 'الألوان',
+    'g.btn.primary': 'احجز موعدك',
+    'g.btn.ghost': 'عرض التفاصيل',
+    'g.btn.quiet': 'ليس الآن',
+    'g.btn.small': 'صغير',
+    'g.btn.large': 'كبير',
+    'g.btn.unavailable': 'غير متاح',
+    'g.seg.week': 'الأسبوع',
+    'g.seg.month': 'الشهر',
+    'g.chip.all': 'الكل',
+    'g.chip.wash': 'غسيل',
+    'g.chip.polish': 'تلميع',
+    'g.chip.interior': 'داخلي',
+    'g.chip.protect': 'حماية',
+    'g.chip.tint': 'تظليل',
+    'g.switch': 'ذكّرني عبر واتساب قبل الموعد بساعة',
+    'g.name_hint': 'الاسم الذي تحب أن نناديك به',
+    'g.phone_hint': 'سنرسل تأكيد الحجز عبر واتساب',
+    'g.notes_ph': 'مثلاً: السيارة في القبو، الموقف ٢٤',
+    'g.full': 'مكتمل',
+    'g.toast.ok': 'تم تأكيد حجزك. نراك قريباً.',
+    'g.toast.err': 'سبقك أحدهم إلى هذا الموعد، اختر وقتاً آخر.',
+    'g.toast.info': 'تم نسخ رابط الحجز',
+    'g.b.ok': 'نجاح',
+    'g.b.err': 'خطأ',
+    'g.b.info': 'معلومة',
+    'g.b.sheet': 'ملخص الحجز',
+    'g.b.confirm': 'إلغاء حجز',
+    'g.confirm.title': 'إلغاء هذا الحجز؟',
+    'g.confirm.msg': 'ستصل العميلَ رسالة عبر واتساب، ويُتاح الموعد لغيره فوراً.',
+    'g.confirm.yes': 'نعم، ألغِ الحجز',
+    'g.confirm.no': 'إبقاء الحجز',
+    'g.cancelled': 'أُلغي الحجز',
+    'g.kept': 'بقي الحجز كما هو',
+    'g.sheet.title': 'راجع حجزك',
+    'g.empty.title': 'يوم هادئ',
+    'g.empty.text': 'لا حجوزات لهذا اليوم بعد. شارك رابط صفحتك ليبدأ العملاء بالحجز.',
+    'g.empty.cta': 'نسخ رابط الحجز',
+    'g.stat.bookings': 'حجوزات اليوم',
+    'g.stat.revenue': 'الإيراد المتوقع',
+    'g.stat.occupancy': 'نسبة الإشغال',
+    'g.stat.new': 'عملاء جدد',
+    'g.stat.vs': '{n} عن الأسبوع الماضي',
+    'g.tl.title': 'جدول اليوم',
+    'g.car1': 'لكزس ES · أبيض',
+    'g.car2': 'تاهو · أسود',
+    'g.car3': 'كامري · فضي',
+    'g.car4': 'رنج روفر · أخضر',
+    'g.car5': 'أكورد · رمادي',
+    'g.list.services': 'الخدمات',
+    'g.list.bookings': 'آخر الحجوزات',
+    'g.type.d': 'موعدك، بكل هدوء.',
+    'g.type.h': 'كيف نخدمك اليوم؟',
+    'g.type.b': 'اختر الخدمة والموعد المناسبين، وسنهتم بالباقي. يصلك التأكيد عبر واتساب خلال لحظات.',
+    'g.footer': 'مرجع داخلي لفريق البناء.',
+    'g.sw.bg': 'الخلفية',
+    'g.sw.surface': 'السطح',
+    'g.sw.surface2': 'السطح ٢',
+    'g.sw.ink': 'النص',
+    'g.sw.ink2': 'النص الثانوي',
+    'g.sw.mut': 'الخافت',
+    'g.sw.accent': 'اللون المميِّز',
+    'g.sw.accentink': 'نص فوق المميِّز',
+    'g.sw.ok': 'نجاح',
+    'g.sw.warn': 'تنبيه',
+    'g.sw.err': 'خطأ',
+  },
+  en: {
+    'g.brand': 'Mamar',
+    'g.kicker': 'Foundation · v1',
+    'g.title': 'The booking kit',
+    'g.lede': 'The shared pieces behind every booking surface — the customer flow, the owner’s dashboard and the admin. Everything here is built on design tokens, so a business’s theme restyles all of it.',
+    'g.theme': 'Theme',
+    'g.th.signature': 'Signature',
+    'g.th.light': 'Signature light',
+    'g.th.a': 'Car wash',
+    'g.th.b': 'Karting',
+    'g.biz': 'Marsa Car Care',
+    'g.biz_sub': 'Jeddah · Al Shati',
+    'g.q1': 'What can we do for you today?',
+    'g.q1_hint': 'Choose one service — you can add extras in the next step.',
+    'g.q2': 'When suits you?',
+    'g.q2_hint': 'Times are in Jeddah time, and prayer times are closed automatically.',
+    'g.s1.title': 'Signature hand wash',
+    'g.s1.meta': 'Inside and out',
+    'g.s2.title': 'Polish & nano-ceramic',
+    'g.s2.meta': 'Protection for 12 months',
+    'g.s3.title': 'Deep interior detail',
+    'g.s3.meta': 'Seats steamed and sanitised',
+    'g.s4.title': 'Heat-reject tint',
+    'g.s4.meta': 'Unavailable this week',
+    'g.offer_badge': 'This week’s offer',
+    'g.pick_service': 'Choose a service to continue',
+    'g.pick_time': 'Choose a time that suits you',
+    'g.addon1': 'Cabin fragrance',
+    'g.addon2': 'Wheel polish',
+    'g.cars': 'Number of cars',
+    'g.sec.buttons': 'Buttons',
+    'g.sec.choices': 'Choice cards',
+    'g.sec.controls': 'Controls',
+    'g.sec.fields': 'Fields',
+    'g.sec.datetime': 'Date & time',
+    'g.sec.progress': 'Progress',
+    'g.sec.feedback': 'Feedback & overlays',
+    'g.sec.owner': 'Owner dashboard',
+    'g.sec.type': 'Type & colour',
+    'g.d.buttons': 'One primary action per screen; everything else stays quiet.',
+    'g.d.choices': 'Large, easy-to-tap cards: title, a line of detail, and the price at the end.',
+    'g.d.controls': 'Segmented control, filter chips, a switch and a stepper.',
+    'g.d.fields': 'Floating labels, clear errors, and numbers typed left-to-right.',
+    'g.d.datetime': 'A day strip with Gregorian and Hijri dates, and a time grid that respects prayer times.',
+    'g.d.progress': 'A bar and dots for the booking steps.',
+    'g.d.feedback': 'Toasts, a bottom sheet, a confirmation, loading skeletons and an empty state.',
+    'g.d.owner': 'Today’s numbers, the day timeline, lists and booking statuses.',
+    'g.d.type': 'The type scale and colour tokens of the current theme.',
+    'g.l.variants': 'Variants',
+    'g.l.sizes': 'Sizes',
+    'g.l.states': 'States',
+    'g.l.addons': 'Extras',
+    'g.l.media': 'With image',
+    'g.l.seg': 'Segmented',
+    'g.l.chips': 'Chips',
+    'g.l.switch': 'Switch',
+    'g.l.stepper': 'Stepper',
+    'g.l.pills': 'Booking status',
+    'g.l.stats': 'Stats',
+    'g.l.rows': 'Lists',
+    'g.l.toasts': 'Toasts',
+    'g.l.overlays': 'Overlays',
+    'g.l.skeleton': 'Loading',
+    'g.l.empty': 'Empty state',
+    'g.l.type': 'Type',
+    'g.l.colors': 'Colour',
+    'g.btn.primary': 'Book a time',
+    'g.btn.ghost': 'View details',
+    'g.btn.quiet': 'Not now',
+    'g.btn.small': 'Small',
+    'g.btn.large': 'Large',
+    'g.btn.unavailable': 'Unavailable',
+    'g.seg.week': 'Week',
+    'g.seg.month': 'Month',
+    'g.chip.all': 'All',
+    'g.chip.wash': 'Wash',
+    'g.chip.polish': 'Polish',
+    'g.chip.interior': 'Interior',
+    'g.chip.protect': 'Protection',
+    'g.chip.tint': 'Tint',
+    'g.switch': 'Remind me on WhatsApp an hour before',
+    'g.name_hint': 'What should we call you?',
+    'g.phone_hint': 'We’ll send your confirmation on WhatsApp',
+    'g.notes_ph': 'e.g. The car is in the basement, bay 24',
+    'g.full': 'Full',
+    'g.toast.ok': 'You’re booked. See you soon.',
+    'g.toast.err': 'Someone just took that time — please pick another.',
+    'g.toast.info': 'Booking link copied',
+    'g.b.ok': 'Success',
+    'g.b.err': 'Error',
+    'g.b.info': 'Info',
+    'g.b.sheet': 'Booking summary',
+    'g.b.confirm': 'Cancel a booking',
+    'g.confirm.title': 'Cancel this booking?',
+    'g.confirm.msg': 'The customer gets a WhatsApp message, and the time opens up for others straight away.',
+    'g.confirm.yes': 'Yes, cancel it',
+    'g.confirm.no': 'Keep booking',
+    'g.cancelled': 'Booking cancelled',
+    'g.kept': 'Booking kept',
+    'g.sheet.title': 'Review your booking',
+    'g.empty.title': 'A quiet day',
+    'g.empty.text': 'No bookings for today yet. Share your booking link and customers can start booking.',
+    'g.empty.cta': 'Copy booking link',
+    'g.stat.bookings': 'Bookings today',
+    'g.stat.revenue': 'Expected revenue',
+    'g.stat.occupancy': 'Occupancy',
+    'g.stat.new': 'New customers',
+    'g.stat.vs': '{n} vs last week',
+    'g.tl.title': 'Today’s schedule',
+    'g.car1': 'Lexus ES · white',
+    'g.car2': 'Tahoe · black',
+    'g.car3': 'Camry · silver',
+    'g.car4': 'Range Rover · green',
+    'g.car5': 'Accord · grey',
+    'g.list.services': 'Services',
+    'g.list.bookings': 'Latest bookings',
+    'g.type.d': 'Your time, calmly kept.',
+    'g.type.h': 'What can we do for you today?',
+    'g.type.b': 'Choose the service and the time that suit you, and we’ll take care of the rest. Your confirmation arrives on WhatsApp in moments.',
+    'g.footer': 'Internal reference for the build team.',
+    'g.sw.bg': 'Background',
+    'g.sw.surface': 'Surface',
+    'g.sw.surface2': 'Surface 2',
+    'g.sw.ink': 'Ink',
+    'g.sw.ink2': 'Ink 2',
+    'g.sw.mut': 'Muted',
+    'g.sw.accent': 'Accent',
+    'g.sw.accentink': 'On accent',
+    'g.sw.ok': 'OK',
+    'g.sw.warn': 'Warning',
+    'g.sw.err': 'Error',
+  },
+});
+
+/* ---------- themes ---------- */
+const THEMES = {
+  signature: { label: 'g.th.signature', look: 'standard', theme: { mode: 'dark' } },
+  light: { label: 'g.th.light', look: 'standard', theme: { mode: 'light' } },
+  'brand-a': { label: 'g.th.a', look: 'custom', theme: { mode: 'light', bg: '#F7F5F0', accent: '#0E6B5C', font: 'Manrope', radius: 16 } },
+  'brand-b': { label: 'g.th.b', look: 'custom', theme: { mode: 'dark', bg: '#0E0F11', ink: '#F2F0EA', accent: '#E8C547', font: 'Readex Pro', radius: 8 } },
+};
+
+/* ---------- mock data ---------- */
+const SERVICES = [
+  { id: 's1', key: 'g.s1', min: 45, price: 12000 },
+  { id: 's2', key: 'g.s2', min: 180, price: 120000, was: 145000 },
+  { id: 's3', key: 'g.s3', min: 120, price: 38000 },
+];
+const ADDONS = [
+  { id: 'a1', key: 'g.addon1', price: 0 },
+  { id: 'a2', key: 'g.addon2', price: 6500 },
+];
+const params = new URLSearchParams(location.search);
+const S = {
+  theme: THEMES[params.get('theme')] ? params.get('theme') : 'signature',
+  step: params.get('step') === '2' ? 2 : 1,
+  service: 's2',
+  cars: 1,
+  date: riyadhDateISO(),
+  slot: null,
+};
+
+const L = () => lang();
+const svc = () => SERVICES.find((s) => s.id === S.service);
+const total = () => (svc()?.price || 0) * S.cars;
+const fmtMoney = (v) => money(v, L());
+
+/* ---------- concierge ---------- */
+function choiceCard(s, { selected } = {}) {
+  const offer = s.was != null;
+  return h('button', { type: 'button', class: 'b-choice', 'data-value': s.id, 'aria-checked': !!selected },
+    offer && h('span', { class: 'b-choice__badge b-badge' }, t('g.offer_badge')),
+    h('span', { class: 'b-choice__lead' }, h('span', { class: 'b-choice__tick' })),
+    h('span', { class: 'b-choice__main' },
+      h('span', { class: 'b-choice__title' }, t(`${s.key}.title`)),
+      h('span', { class: 'b-choice__meta' }, `${durationMin(s.min, L())} · ${t(`${s.key}.meta`)}`)),
+    h('span', { class: 'b-choice__end' },
+      offer && h('span', { class: 'b-choice__was' }, fmtMoney(s.was)),
+      h('span', { class: ['b-choice__price', offer && 'b-choice__price--offer'] }, fmtMoney(s.price))));
+}
+
+function step1() {
+  const group = h('div', { class: 'b-choices', 'aria-label': t('g.q1') }, SERVICES.map((s) => choiceCard(s, { selected: s.id === S.service })));
+  selectable(group, { onChange: (v) => { S.service = v; updateSummary(); } });
+  return h('section', { class: 'b-step' },
+    h('div', { class: 'b-step__head' },
+      h('span', { class: 'b-eyebrow' }, t('step_of', { n: 1, total: 3 })),
+      h('h2', { class: 'b-step__q' }, t('g.q1')),
+      h('p', { class: 'b-step__hint' }, t('g.q1_hint'))),
+    group);
+}
+
+function dateStrip() {
+  const today = riyadhDateISO();
+  const days = Array.from({ length: 14 }, (_, i) => addDaysISO(today, i));
+  const strip = h('div', { class: 'b-dates', 'aria-label': t('date') }, days.map((d, i) =>
+    h('button', {
+      type: 'button', class: ['b-date', i === 0 && 'is-today'], 'data-value': d,
+      'aria-checked': d === S.date, disabled: i === 4, 'aria-label': `${dateLong(d, L())} — ${hijriShort(d, L())}`,
+    },
+      h('span', { class: 'b-date__wd' }, i === 0 ? t('today') : weekday(d, L(), true)),
+      h('span', { class: 'b-date__d' }, digits(String(riyadhParts(d).day), L())),
+      h('span', { class: 'b-date__h' }, i === 4 ? t('g.full') : hijriShort(d, L())))));
+  const head = h('div', { class: 'b-dates__month' }, h('b', null, monthYear(S.date, L())), h('span', null, hijriMonthYear(S.date, L())));
+  return { head, strip };
+}
+
+function hhmm(m) { return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; }
+
+function slotGrid(dateISO) {
+  const p = prayerTimes(dateISO, { minutes: true });
+  const closures = ['dhuhr', 'asr', 'maghrib', 'isha'].map((k) => ({ k, from: p[k], to: p[k] + 25 }));
+  const groups = [
+    { key: 'morning', from: 540, to: 720 },
+    { key: 'afternoon', from: 720, to: 1020 },
+    { key: 'evening', from: 1020, to: 1320 },
+  ];
+  const seed = [...dateISO].reduce((a, c) => a + c.charCodeAt(0), 0);
+  const wrap = h('div', { class: 'b-slots' });
+  for (const g of groups) {
+    const grid = h('div', { class: 'b-slots__grid', 'aria-label': t(g.key) });
+    const items = [];
+    for (let m = g.from; m < g.to; m += 30) {
+      const hit = closures.find((c) => m < c.to && m + 30 > c.from);
+      if (hit) {
+        if (!items.some((it) => it.pause === hit.k)) items.push({ pause: hit.k, at: hit.from });
+        continue;
+      }
+      items.push({ m, booked: (seed + m) % 7 === 0 });
+    }
+    for (const c of closures) {
+      if (c.from >= g.from && c.from < g.to && !items.some((it) => it.pause === c.k)) items.push({ pause: c.k, at: c.from });
+    }
+    items.sort((a, b) => (a.m ?? a.at) - (b.m ?? b.at));
+    for (const it of items) {
+      if (it.pause) {
+        grid.appendChild(h('div', { class: 'b-slots__pause' }, icon('clock'),
+          `${t('prayer.break', { prayer: t(`prayer.${it.pause}`) })} · ${time(hhmm(it.at), L())}`));
+      } else {
+        const v = hhmm(it.m);
+        grid.appendChild(h('button', { type: 'button', class: 'b-slot', 'data-value': v, disabled: it.booked, 'aria-checked': S.slot === v }, time(v, L())));
+      }
+    }
+    if (grid.children.length) wrap.appendChild(h('div', { class: 'b-slots__group' }, h('p', { class: 'b-slots__label' }, t(g.key)), grid));
+  }
+  selectable(wrap, { selector: '.b-slot', onChange: (v) => { S.slot = v; updateSummary(); } });
+  return wrap;
+}
+
+function step2() {
+  const { head, strip } = dateStrip();
+  const slotsHost = h('div', null, slotGrid(S.date));
+  selectable(strip, {
+    onChange: (v) => {
+      S.date = v; S.slot = null;
+      head.replaceChildren(h('b', null, monthYear(v, L())), h('span', null, hijriMonthYear(v, L())));
+      slotsHost.replaceChildren(slotGrid(v));
+      updateSummary();
+    },
+  });
+  return h('section', { class: 'b-step' },
+    h('div', { class: 'b-step__head' },
+      h('span', { class: 'b-eyebrow' }, t('step_of', { n: 2, total: 3 })),
+      h('h2', { class: 'b-step__q' }, t('g.q2')),
+      h('p', { class: 'b-step__hint' }, t('g.q2_hint'))),
+    h('div', null, head, strip),
+    slotsHost);
+}
+
+let lastTotal = null;
+function updateSummary() {
+  const s = svc();
+  const sub = S.step === 1
+    ? (s ? `${t(`${s.key}.title`)} · ${durationMin(s.min, L())}` : t('g.pick_service'))
+    : (S.slot ? `${dateLong(S.date, L(), { year: false })} · ${time(S.slot, L())}` : t('g.pick_time'));
+  $('#sumSub').textContent = sub;
+  const el = $('#sumTotal');
+  animateNumber(el, lastTotal ?? total(), total(), { format: fmtMoney, step: 100 });
+  lastTotal = total();
+  const cta = $('#sumCta');
+  cta.replaceChildren(h('span', null, S.step === 1 ? t('continue') : t('confirm_booking')));
+  cta.disabled = S.step === 1 ? !s : !S.slot;
+
+  const dots = $('#devDots');
+  dots.replaceChildren(...[1, 2, 3].map((i) => h('span', { class: ['b-dots__dot', i < S.step && 'is-done', i === S.step && 'is-current'] })));
+  const back = $('#devBack');
+  back.replaceChildren(icon('back'));
+  back.setAttribute('aria-label', t('back'));
+  back.style.visibility = S.step === 1 ? 'hidden' : 'visible';
+}
+
+function renderStage(animate = false, direction = 'forward') {
+  const next = S.step === 1 ? step1() : step2();
+  const stage = $('#stage');
+  if (animate) stepTransition(stage, next, direction);
+  else stage.replaceChildren(next);
+  updateSummary();
+}
+
+$('#sumCta').addEventListener('click', async () => {
+  if (S.step === 1) {
+    S.step = 2;
+    haptic();
+    renderStage(true, 'forward');
+    $('#deviceScroll').scrollTo?.({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  const s = svc();
+  const ok = await sheet({
+    title: t('g.sheet.title'),
+    content: kvSummary(s),
+    actions: [
+      { label: t('edit'), value: false, kind: 'ghost' },
+      { label: t('confirm_booking'), value: true, kind: 'primary', autofocus: true, onClick: () => new Promise((r) => setTimeout(r, 700)) },
+    ],
+  });
+  if (ok) toast(t('g.toast.ok'), { kind: 'ok' });
+});
+$('#devBack').addEventListener('click', () => {
+  if (S.step === 1) return;
+  S.step = 1;
+  renderStage(true, 'back');
+});
+
+function kvSummary(s) {
+  const row = (k, v, cls) => h('div', { class: ['b-kv__row', cls] }, h('dt', { class: 'b-kv__k' }, k), h('dd', { class: 'b-kv__v' }, v));
+  return h('dl', { class: 'b-kv' },
+    row(t('service'), t(`${s.key}.title`)),
+    row(t('date'), dateLong(S.date, L())),
+    row(t('time'), S.slot ? time(S.slot, L()) : '—'),
+    row(t('duration'), durationMin(s.min, L())),
+    row(t('g.addon1'), included(L())),
+    row(t('total'), fmtMoney(total()), 'b-kv__row--total'));
+}
+
+/* ---------- catalogue ---------- */
+function section(n, key, ...body) {
+  return h('section', { class: 'g-sec', id: key.split('.').pop() },
+    h('div', { class: 'g-sec__head' },
+      h('span', { class: 'b-eyebrow' }, `${digits(String(n).padStart(2, '0'), L())} — ${t(key)}`),
+      h('h2', { class: 'b-h2' }, t(key)),
+      h('p', { class: 'b-mut' }, t(key.replace('.sec.', '.d.')))),
+    ...body);
+}
+const demo = (label, ...kids) => h('div', { class: 'g-demo' }, label && h('p', { class: 'g-label' }, t(label)), ...kids);
+const rowf = (...kids) => h('div', { class: 'b-row-flex' }, ...kids);
+const btn = (cls, label, extra = {}) => h('button', { type: 'button', class: `b-btn ${cls}`, ...extra }, label);
+
+function secButtons() {
+  return section(1, 'g.sec.buttons',
+    h('div', { class: 'g-cols' },
+      demo('g.l.variants', rowf(
+        btn('b-btn--primary', t('g.btn.primary')),
+        btn('b-btn--ghost', t('g.btn.ghost')),
+        btn('b-btn--quiet', t('g.btn.quiet')))),
+      demo('g.l.sizes', rowf(
+        btn('b-btn--primary b-btn--sm', t('g.btn.small')),
+        btn('b-btn--ghost b-btn--lg', t('g.btn.large')),
+        h('button', { type: 'button', class: 'b-btn b-btn--ghost b-btn--icon', 'aria-label': t('add') }, icon('plus')),
+        h('button', { type: 'button', class: 'b-btn b-btn--quiet b-btn--icon', 'aria-label': t('back') }, icon('back')))),
+      demo('g.l.states', rowf(
+        h('button', { type: 'button', class: 'b-btn b-btn--primary is-loading', 'aria-busy': 'true' }, h('span', null, t('g.btn.primary'))),
+        btn('b-btn--primary', t('g.btn.unavailable'), { disabled: true }),
+        btn('b-btn--ghost b-btn--danger', t('delete')))),
+      demo(null, h('button', {
+        type: 'button', class: 'b-btn b-btn--primary b-btn--block b-btn--lg',
+        onClick: (e) => {
+          const b = e.currentTarget;
+          b.setAttribute('aria-busy', 'true');
+          setTimeout(() => { b.removeAttribute('aria-busy'); toast(t('g.toast.ok'), { kind: 'ok' }); }, 1100);
+        },
+      }, h('span', null, t('confirm_booking'))))));
+}
+
+function secChoices() {
+  const disabled = h('button', { type: 'button', class: 'b-choice', disabled: true },
+    h('span', { class: 'b-choice__main' },
+      h('span', { class: 'b-choice__title' }, t('g.s4.title')),
+      h('span', { class: 'b-choice__meta' }, t('g.s4.meta'))),
+    h('span', { class: 'b-choice__end' }, h('span', { class: 'b-choice__price' }, fmtMoney(89000))));
+  const addons = h('div', { class: 'b-choices' }, ADDONS.map((a) =>
+    h('button', { type: 'button', class: 'b-choice b-choice--compact', 'data-value': a.id, 'aria-pressed': a.id === 'a1' },
+      h('span', { class: 'b-choice__lead' }, h('span', { class: 'b-choice__tick' })),
+      h('span', { class: 'b-choice__main' }, h('span', { class: 'b-choice__title' }, t(a.key))),
+      h('span', { class: 'b-choice__end' }, h('span', { class: 'b-choice__price' }, a.price ? plusMoney(a.price, L()) : included(L()))))));
+  selectable(addons, { multi: true });
+  const media = h('button', { type: 'button', class: 'b-choice', 'aria-pressed': 'false' },
+    h('span', { class: 'b-choice__media' }, icon('car')),
+    h('span', { class: 'b-choice__main' },
+      h('span', { class: 'b-choice__title' }, t('g.s1.title')),
+      h('span', { class: 'b-choice__meta' }, `${durationMin(45, L())} · ${t('g.s1.meta')}`)),
+    h('span', { class: 'b-choice__end' }, h('span', { class: 'b-choice__price' }, fmtMoney(12000))));
+  return section(2, 'g.sec.choices',
+    h('div', { class: 'g-cols' },
+      demo('g.l.states', h('div', { class: 'b-choices' }, choiceCard(SERVICES[1], { selected: true }), choiceCard(SERVICES[2]), disabled)),
+      h('div', { class: 'b-stack', style: { '--_gap': 'var(--b-s-7)' } },
+        demo('g.l.addons', addons),
+        demo('g.l.media', h('div', { class: 'b-choices' }, media)))));
+}
+
+function secControls() {
+  const seg = h('div', { class: 'b-seg', role: 'radiogroup', 'aria-label': t('g.l.seg') },
+    [['today', 'today'], ['week', 'g.seg.week'], ['month', 'g.seg.month']].map(([v, k], i) =>
+      h('button', { type: 'button', class: 'b-seg__opt', 'data-value': v, 'aria-checked': i === 0 }, t(k))));
+  selectable(seg);
+  const chips = h('div', { class: 'b-chips b-chips--scroll', 'aria-label': t('g.l.chips') },
+    ['all', 'wash', 'polish', 'interior', 'protect', 'tint'].map((c, i) =>
+      h('button', { type: 'button', class: 'b-chip', 'data-value': c, 'aria-checked': i === 0 }, t(`g.chip.${c}`))));
+  selectable(chips);
+  const valEl = h('output', { class: 'b-stepper__val', 'aria-live': 'polite' }, digits(String(S.cars), L()));
+  const minus = h('button', { type: 'button', class: 'b-stepper__btn', 'aria-label': '−' }, icon('minus'));
+  const plus = h('button', { type: 'button', class: 'b-stepper__btn', 'aria-label': '+' }, icon('plus'));
+  const sync = () => { valEl.textContent = digits(String(S.cars), L()); minus.disabled = S.cars <= 1; plus.disabled = S.cars >= 4; updateSummary(); };
+  minus.addEventListener('click', () => { S.cars = Math.max(1, S.cars - 1); haptic(); sync(); });
+  plus.addEventListener('click', () => { S.cars = Math.min(4, S.cars + 1); haptic(); sync(); });
+  minus.disabled = S.cars <= 1;
+  return section(3, 'g.sec.controls',
+    h('div', { class: 'g-cols' },
+      demo('g.l.seg', seg),
+      demo('g.l.stepper', h('div', { class: 'b-row-flex', style: { justifyContent: 'space-between' } },
+        h('span', null, t('g.cars')), h('div', { class: 'b-stepper', role: 'group', 'aria-label': t('g.cars') }, minus, valEl, plus))),
+      demo('g.l.chips', chips),
+      demo('g.l.switch', h('label', { class: 'b-switch' },
+        h('input', { type: 'checkbox', class: 'b-switch__input', role: 'switch', checked: true }),
+        h('span', { class: 'b-switch__track', 'aria-hidden': 'true' }),
+        h('span', { class: 'b-switch__label' }, t('g.switch'))))));
+}
+
+let fieldN = 0;
+function field({ label, type = 'text', hint, error, value = '', autocomplete, inputmode, staticLabel, placeholder, textarea }) {
+  const id = `f${++fieldN}`;
+  const msgId = `${id}-m`;
+  const input = h(textarea ? 'textarea' : 'input', {
+    id, class: 'b-field__input', type: textarea ? null : type, placeholder: placeholder || ' ', value: textarea ? null : value,
+    autocomplete, inputmode, 'aria-describedby': hint || error ? msgId : null, 'aria-invalid': error ? 'true' : null,
+  });
+  if (textarea && value) input.value = value;
+  const lab = h('label', { class: 'b-field__label', for: id }, label);
+  return h('div', { class: ['b-field', error && 'is-invalid', staticLabel && 'b-field--static'] },
+    staticLabel && lab,
+    h('div', { class: 'b-field__box' }, input, !staticLabel && lab),
+    (hint || error) && h('p', { class: 'b-field__msg', id: msgId }, error || hint));
+}
+
+function secFields() {
+  const phone = field({ label: t('phone'), type: 'tel', value: '05597977', inputmode: 'tel', autocomplete: 'tel', error: t('field.phone_invalid') });
+  const phoneInput = phone.querySelector('input');
+  phoneInput.addEventListener('blur', () => {
+    const n = normalizePhone(phoneInput.value);
+    phone.classList.toggle('is-invalid', !n);
+    phoneInput.setAttribute('aria-invalid', String(!n));
+    phone.querySelector('.b-field__msg').textContent = n ? `${t('g.phone_hint')} · ${formatPhone(n, L())}` : t('field.phone_invalid');
+  });
+  return section(4, 'g.sec.fields',
+    h('div', { class: 'g-cols' },
+      h('div', { class: 'b-stack' },
+        field({ label: t('name'), autocomplete: 'name', hint: t('g.name_hint') }),
+        phone),
+      h('div', { class: 'b-stack' },
+        field({ label: t('email'), type: 'email', autocomplete: 'email', staticLabel: true, placeholder: 'name@example.com' }),
+        field({ label: `${t('notes')} (${t('optional')})`, textarea: true, staticLabel: true, placeholder: t('g.notes_ph') }))));
+}
+
+function secDateTime() {
+  const { head, strip } = dateStrip();
+  const slotsHost = h('div', null, slotGrid(S.date));
+  selectable(strip, { onChange: (v) => { head.replaceChildren(h('b', null, monthYear(v, L())), h('span', null, hijriMonthYear(v, L()))); slotsHost.replaceChildren(slotGrid(v)); } });
+  return section(5, 'g.sec.datetime', h('div', { class: 'b-shell', style: { maxWidth: '640px', marginInline: '0', paddingInline: '0' } },
+    h('div', { class: 'b-stack', style: { '--_gap': 'var(--b-s-6)' } }, h('div', null, head, strip), slotsHost)));
+}
+
+function secProgress() {
+  return section(6, 'g.sec.progress', h('div', { class: 'g-cols' },
+    demo(null, h('div', { class: 'b-progress', style: { '--p': .5 }, role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 4, 'aria-valuenow': 2 }, h('span', { class: 'b-progress__bar' }))),
+    demo(null, h('div', { class: 'b-dots' }, [1, 2, 3, 4].map((i) => h('span', { class: ['b-dots__dot', i < 2 && 'is-done', i === 2 && 'is-current'] }))))));
+}
+
+function secFeedback() {
+  return section(7, 'g.sec.feedback',
+    h('div', { class: 'g-cols' },
+      demo('g.l.toasts', rowf(
+        btn('b-btn--ghost b-btn--sm', t('g.b.ok'), { onClick: () => toast(t('g.toast.ok'), { kind: 'ok' }) }),
+        btn('b-btn--ghost b-btn--sm', t('g.b.err'), { onClick: () => toast(t('g.toast.err'), { kind: 'err' }) }),
+        btn('b-btn--ghost b-btn--sm', t('g.b.info'), { onClick: () => toast(t('g.toast.info'), { kind: 'info', action: { label: t('undo'), onClick: () => {} } }) }))),
+      demo('g.l.overlays', rowf(
+        btn('b-btn--ghost b-btn--sm', t('g.b.sheet'), {
+          onClick: () => sheet({
+            title: t('g.sheet.title'), content: kvSummary(svc()),
+            actions: [{ label: t('edit'), value: false }, { label: t('confirm_booking'), value: true, kind: 'primary', autofocus: true }],
+          }).then((ok) => ok && toast(t('g.toast.ok'), { kind: 'ok' })),
+        }),
+        btn('b-btn--ghost b-btn--sm b-btn--danger', t('g.b.confirm'), {
+          onClick: async () => {
+            const yes = await confirmDialog({ title: t('g.confirm.title'), message: t('g.confirm.msg'), confirm: t('g.confirm.yes'), cancel: t('g.confirm.no'), danger: true });
+            toast(yes ? t('g.cancelled') : t('g.kept'), { kind: yes ? 'info' : 'ok' });
+          },
+        }))),
+      demo('g.l.skeleton', skeleton(2), skeleton(3, { variant: 'line' })),
+      demo('g.l.empty', h('div', { class: 'b-card' },
+        h('div', { class: 'b-empty' },
+          h('div', { class: 'b-empty__mark' }, icon('calendar')),
+          h('h3', { class: 'b-empty__title' }, t('g.empty.title')),
+          h('p', { class: 'b-empty__text' }, t('g.empty.text')),
+          btn('b-btn--ghost b-btn--sm', t('g.empty.cta'), { onClick: () => toast(t('g.toast.info'), { kind: 'ok' }) }))))));
+}
+
+function secOwner() {
+  const today = riyadhDateISO();
+  const p = prayerTimes(today, { minutes: true });
+  const stat = (label, value, delta, up) => h('div', { class: 'b-stat' },
+    h('span', { class: 'b-stat__label' }, label),
+    h('strong', { class: 'b-stat__value' }, ...value),
+    delta && h('span', { class: ['b-stat__delta', up ? 'is-up' : 'is-down'] }, icon(up ? 'arrowUp' : 'arrowDown'), delta));
+  const pct = L() === 'ar' ? '٪' : '%';
+  const stats = h('div', { class: 'b-stats' },
+    stat(t('g.stat.bookings'), [digits('14', L())], t('g.stat.vs', { n: `+${digits('3', L())}` }), true),
+    stat(t('g.stat.revenue'), [num(5799, L()), h('small', null, t('sar'))], t('g.stat.vs', { n: `+${digits('12', L())}${pct}` }), true),
+    stat(t('g.stat.occupancy'), [digits('82', L()), h('small', null, pct)], t('g.stat.vs', { n: `−${digits('4', L())}${pct}` }), false),
+    stat(t('g.stat.new'), [digits('6', L())]));
+
+  const B = [
+    { at: 570, s: SERVICES[0], car: 'g.car1', st: 'completed' },
+    { at: 630, s: SERVICES[2], car: 'g.car2', st: 'completed' },
+    { at: 780, s: SERVICES[1], car: 'g.car3', st: 'confirmed' },
+    { at: 840, s: SERVICES[0], car: 'g.car4', st: 'pending' },
+    { at: 1110, s: SERVICES[2], car: 'g.car5', st: 'cancelled' },
+    { at: 1170, s: SERVICES[0], car: 'g.car1', st: 'no_show' },
+  ];
+  const items = [
+    ...B.map((b) => ({ m: b.at, el: h('li', { class: `b-tl__item b-tl__item--${b.st.replace('_', '-')}` },
+      h('time', { class: 'b-tl__time' }, time(hhmm(b.at), L()), h('small', null, durationMin(b.s.min, L()))),
+      h('button', { type: 'button', class: 'b-tl__card' },
+        h('div', { class: 'b-tl__top' },
+          h('span', { class: 'b-tl__title' }, t(`${b.s.key}.title`)),
+          h('span', { class: `b-pill b-pill--${b.st.replace('_', '-')}` }, t(`status.${b.st}`))),
+        h('span', { class: 'b-tl__sub' }, `${t(b.car)} · ${fmtMoney(b.s.price)}`))) })),
+    { m: 760, el: h('li', { class: 'b-tl__now' }, h('span', { class: 'b-tl__time' }, t('now'))) },
+    ...['dhuhr', 'asr'].map((k) => ({ m: p[k], el: h('li', { class: 'b-tl__gap' },
+      h('span', { class: 'b-tl__time' }, time(hhmm(p[k]), L())),
+      h('span', null, icon('clock'), t('prayer.break', { prayer: t(`prayer.${k}`) }))) })),
+  ].sort((a, b) => a.m - b.m);
+
+  const seg = h('div', { class: 'b-seg', role: 'radiogroup' },
+    [['today', 'today'], ['week', 'g.seg.week']].map(([v, k], i) => h('button', { type: 'button', class: 'b-seg__opt', 'data-value': v, 'aria-checked': i === 0 }, t(k))));
+  selectable(seg);
+
+  const bookingsList = h('div', { class: 'b-list' }, B.slice(2, 5).map((b) =>
+    h('button', { type: 'button', class: 'b-row' },
+      h('span', { class: 'b-row__lead' }, icon('car')),
+      h('span', { class: 'b-row__main' },
+        h('span', { class: 'b-row__title' }, t(`${b.s.key}.title`)),
+        h('span', { class: 'b-row__sub' }, `${t('today')} · ${time(hhmm(b.at), L())} · ${t(b.car)}`)),
+      h('span', { class: 'b-row__end' }, h('span', { class: `b-pill b-pill--${b.st}` }, t(`status.${b.st}`))),
+      icon('forward', { class: 'b-row__chev' }))));
+  const servicesList = h('div', { class: 'b-list' }, SERVICES.map((s, i) =>
+    h('label', { class: 'b-row' },
+      h('span', { class: 'b-row__lead' }, icon('sparkle')),
+      h('span', { class: 'b-row__main' },
+        h('span', { class: 'b-row__title' }, t(`${s.key}.title`)),
+        h('span', { class: 'b-row__sub' }, `${durationMin(s.min, L())} · ${fmtMoney(s.price)}`)),
+      h('span', { class: 'b-row__end' }, h('span', { class: 'b-switch' },
+        h('input', { type: 'checkbox', class: 'b-switch__input', role: 'switch', checked: i !== 2, 'aria-label': t(`${s.key}.title`) }),
+        h('span', { class: 'b-switch__track', 'aria-hidden': 'true' }))))));
+
+  const pills = rowf(...['confirmed', 'pending', 'completed', 'cancelled', 'no_show'].map((st) =>
+    h('span', { class: `b-pill b-pill--${st.replace('_', '-')}` }, t(`status.${st}`))),
+  h('span', { class: 'b-badge' }, t('offer')), h('span', { class: 'b-badge b-badge--soft' }, t('free')));
+
+  return section(8, 'g.sec.owner',
+    demo('g.l.stats', stats),
+    h('div', { class: 'g-cols' },
+      h('div', { class: 'b-stack', style: { '--_gap': 'var(--b-s-5)' } },
+        h('div', { class: 'g-tl-head' }, h('h3', { class: 'b-h3' }, t('g.tl.title')), seg),
+        h('p', { class: 'b-mut b-small' }, `${dateLong(today, L())} · ${tn('bookings', B.length)}`),
+        h('ol', { class: 'b-tl' }, items.map((i) => i.el))),
+      h('div', { class: 'b-stack', style: { '--_gap': 'var(--b-s-7)' } },
+        demo('g.list.bookings', bookingsList),
+        demo('g.list.services', servicesList),
+        demo('g.l.pills', pills))));
+}
+
+function secType() {
+  const sw = (name, v) => {
+    const val = getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    return h('div', { class: 'g-sw' }, h('i', { style: { background: `var(${v})` } }), h('b', null, t(name)), h('code', null, `${v} ${val}`));
+  };
+  return section(9, 'g.sec.type',
+    h('div', { class: 'g-cols' },
+      demo('g.l.type', h('div', { class: 'g-spec' },
+        h('div', null, h('code', null, '.b-display'), h('p', { class: 'b-display' }, t('g.type.d'))),
+        h('div', null, h('code', null, '.b-step__q'), h('p', { class: 'b-step__q' }, t('g.type.h'))),
+        h('div', null, h('code', null, '.b-lede'), h('p', { class: 'b-lede' }, t('g.type.b'))),
+        h('div', null, h('code', null, 'body'), h('p', null, t('g.type.b'))),
+        h('div', null, h('code', null, '.b-eyebrow'), h('span', { class: 'b-eyebrow' }, t('step_of', { n: 2, total: 3 }))))),
+      demo('g.l.colors', h('div', { class: 'g-swatches' },
+        sw('g.sw.bg', '--b-bg'), sw('g.sw.surface', '--b-surface'), sw('g.sw.surface2', '--b-surface-2'),
+        sw('g.sw.ink', '--b-ink'), sw('g.sw.ink2', '--b-ink-2'), sw('g.sw.mut', '--b-mut'),
+        sw('g.sw.accent', '--b-accent'), sw('g.sw.accentink', '--b-accent-ink'),
+        sw('g.sw.ok', '--b-ok'), sw('g.sw.warn', '--b-warn'), sw('g.sw.err', '--b-err')))));
+}
+
+function renderCatalogue() {
+  fieldN = 0;
+  $('#catalogue').replaceChildren(secButtons(), secChoices(), secControls(), secFields(), secDateTime(), secProgress(), secFeedback(), secOwner(), secType());
+}
+
+/* ---------- theme switcher ---------- */
+function renderThemeSeg() {
+  const seg = $('#themeSeg');
+  seg.setAttribute('aria-label', t('g.theme'));
+  seg.replaceChildren(...Object.entries(THEMES).map(([k, v]) =>
+    h('button', { type: 'button', class: 'b-seg__opt', 'data-value': k, 'aria-checked': k === S.theme }, t(v.label))));
+}
+const themeSel = selectable($('#themeSeg'), {
+  onChange: (v) => {
+    S.theme = v;
+    setTheme();
+    const u = new URL(location.href);
+    u.searchParams.set('theme', v);
+    history.replaceState(null, '', u);
+  },
+});
+function revealTheme() {
+  $('#themeSeg [aria-checked="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+function setTheme() {
+  const th = THEMES[S.theme];
+  applyTheme(document.documentElement, { look: th.look, theme: th.theme });
+  requestAnimationFrame(() => { const s = $('#type'); if (s) s.replaceWith(secType()); });
+}
+
+/* ---------- boot ---------- */
+function renderAll() {
+  renderThemeSeg();
+  themeSel.set(S.theme);
+  revealTheme();
+  renderStage(false);
+  renderCatalogue();
+  $('#madeBy').replaceChildren(madeBy());
+  document.title = `${t('g.title')} — Mamar`;
+}
+
+boot();
+setTheme();
+renderAll();
+onLang(() => { lastTotal = null; renderAll(); });
+if (location.hash) requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView());
+</script>
+</body>
+</html>

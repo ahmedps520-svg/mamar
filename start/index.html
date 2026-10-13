@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="signature">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#08090B">
+<meta name="color-scheme" content="dark">
+<title>صمّم نظام الحجز لنشاطك · ممر</title>
+<meta name="description" content="اختر خيارات نظام الحجز لنشاطك وشاهد السعر يتحدّث مع كل اختيار: للصالونات ومغاسل السيارات والأنشطة. من ممر في جدة.">
+<link rel="canonical" href="https://mamar.site/start/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mamar.site/start/">
+<meta property="og:site_name" content="Mamar">
+<meta property="og:locale" content="ar_SA">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="صمّم نظام الحجز لنشاطك · ممر">
+<meta property="og:description" content="أجب عن أسئلة قليلة وشاهد سعر نظام الحجز يتحدّث مع كل اختيار. للصالونات ومغاسل السيارات والأنشطة.">
+<meta property="og:image" content="https://mamar.site/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../platform/ui/tokens.css">
+<link rel="stylesheet" href="../platform/ui/kit.css">
+<link rel="stylesheet" href="start.css">
+<script>
+  /* Set the language before first paint so there is no RTL/LTR flash. */
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = q || localStorage.getItem('mamar-lang');
+    if (l === 'en') { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; document.title = 'Design your booking system · Mamar'; }
+  } catch (e) {}
+</script>
+<script type="module" src="start.js"></script>
+</head>
+<body class="b-app st-page" data-step="welcome">
+<div class="b-grain" aria-hidden="true"></div>
+<div class="st-glow" aria-hidden="true"></div>
+
+<div class="st-assist" id="assist" hidden>
+  <div class="st-assist__in">
+    <span class="st-assist__mark" id="assistMark" aria-hidden="true"></span>
+    <strong id="assistLabel">تعبئة نيابةً عن عميل</strong>
+    <span class="st-assist__state" id="assistState" aria-live="polite"></span>
+    <a class="st-assist__link" id="assistAdmin" href="/admin/">لوحة الإدارة</a>
+  </div>
+</div>
+
+<header class="b-topbar st-top" id="top">
+  <div class="b-topbar__start">
+    <button class="b-iconbtn st-top__back" id="back" type="button" hidden></button>
+    <a class="st-brand" id="brandLink" href="/">
+      <span class="st-brand__mark" id="brandMark" aria-hidden="true"></span>
+      <b class="st-brand__word" data-i18n="st.brand">ممر</b>
+      <span class="st-brand__sub" data-i18n="st.brand_sub">نظام الحجز</span>
+    </a>
+  </div>
+  <div class="b-topbar__end">
+    <button class="b-btn b-btn--quiet b-btn--sm st-top__contact" id="contactMe" type="button" aria-haspopup="dialog"><span id="contactMeLabel">تواصلوا معي</span></button>
+    <button class="b-lang" type="button" data-lang-toggle>EN</button>
+  </div>
+  <div class="b-progress st-progress" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="18" aria-valuenow="0"><span class="b-progress__bar"></span></div>
+</header>
+
+<main class="st-main" id="main">
+  <div class="st-grid">
+    <div class="st-col">
+      <div class="b-stage st-stage" id="stage"></div>
+      <div class="st-foot" id="foot" hidden></div>
+    </div>
+
+    <aside class="st-panel" id="panel" aria-labelledby="panelEyebrow">
+      <div class="st-panel__card">
+        <p class="b-eyebrow" id="panelEyebrow">نظامك</p>
+        <p class="st-panel__name" id="panelName" hidden></p>
+        <ul class="st-lines" id="panelLines"></ul>
+        <div class="st-panel__total">
+          <div>
+            <span class="st-panel__tlabel" id="panelTotalLabel">الإجمالي التقديري</span>
+            <span class="st-panel__setup" id="panelSetup"></span>
+          </div>
+          <strong class="b-num" id="panelTotal">—</strong>
+        </div>
+        <div class="st-panel__plan" id="panelPlan" hidden></div>
+        <p class="st-panel__note" id="panelNote"></p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="st-footer"><span id="madeBy"></span></footer>
+
+<div class="b-summary b-summary--fixed st-bar" id="bar">
+  <div class="b-summary__in st-bar__in">
+    <button class="st-bar__sum" id="barSum" type="button" aria-haspopup="dialog">
+      <span class="b-summary__label st-bar__label"><span id="barLabel">نظامك</span><span class="st-bar__chev" id="barChev" aria-hidden="true"></span></span>
+      <strong class="b-summary__total st-bar__total" id="barTotal">—</strong>
+      <span class="b-summary__sub st-bar__sub" id="barSub"></span>
+    </button>
+    <div class="st-bar__actions" id="barActions"></div>
+  </div>
+</div>
+
+<p class="b-sr" id="live" aria-live="polite" aria-atomic="true"></p>
+</body>
+</html>

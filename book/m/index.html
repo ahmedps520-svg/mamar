@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>إدارة الحجز · Manage booking</title>
+<meta name="description" content="عدّل موعدك أو ألغِه · Change or cancel your booking.">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#08090B">
+<meta property="og:image" content="https://mamar.site/book/og.png">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/platform/ui/tokens.css">
+<link rel="stylesheet" href="/platform/ui/kit.css">
+<link rel="stylesheet" href="/book/book.css">
+<script>
+  /* Language before first paint (no RTL/LTR flash): ?lang, then the visitor's choice. */
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = q === 'en' || q === 'ar' ? q : localStorage.getItem('mamar-lang');
+    if (l === 'en') { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; }
+  } catch (e) {}
+</script>
+<link rel="modulepreload" href="/book/core.js">
+<link rel="modulepreload" href="/book/i18n.js">
+<link rel="modulepreload" href="/platform/api.js">
+<link rel="modulepreload" href="/platform/config.js">
+<link rel="modulepreload" href="/platform/contract.js">
+<link rel="modulepreload" href="/platform/fmt.js">
+<link rel="modulepreload" href="/platform/i18n.js">
+<link rel="modulepreload" href="/platform/i18n/common.js">
+<link rel="modulepreload" href="/platform/i18n/errors.js">
+<link rel="modulepreload" href="/platform/theme.js">
+<link rel="modulepreload" href="/platform/prayer.js">
+<link rel="modulepreload" href="/platform/ics.js">
+<link rel="modulepreload" href="/platform/ui/kit.js">
+<link rel="modulepreload" href="/book/m/manage.js">
+<link rel="modulepreload" href="/platform/live.js">
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import { mountManage } from '/book/m/manage.js';
+mountManage();
+</script>
+</body>
+</html>

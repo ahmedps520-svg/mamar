@@ -1,0 +1,4 @@
+# GitHub Pages: publish the site as-is, but never the local dev server folder.
+exclude:
+  - dev
+  - "**/README.md"
