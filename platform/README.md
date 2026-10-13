@@ -1,5 +1,24 @@
 # Mamar Booking
 
+## It's live (set up 13 Oct 2026)
+
+- **Site:** https://mamar.site/start/ · /b/<name> · /demo/ · /manage/ · /admin/
+- **Supabase project:** `mamar-booking` (org "calnow", Free plan, Frankfurt), at https://yhtcciquttbasylejhre.supabase.co
+- **Database:** `all.sql`, the demo businesses and 400 days of Jeddah prayer times are loaded. Real parallel load was tested: 30 people booking 10 karts gave exactly 10 bookings, and 30 people booking 3 chairs gave exactly 3.
+- **Sign-in:** a link emailed to you. Nobody has a password.
+  - You become admin automatically the first time you sign in with ahmedps520@gmail.com or contact@mamar.site.
+  - Owners get invited by email from the admin and sign in the same way.
+- **Notifications:** the `notify` Edge Function is deployed with Verify JWT off. It made its own push keys, and the database calls it on every new request (tested: 200 OK).
+  - Turn them on in admin → More on your phone.
+  - Email alerts need a Resend key added later as a function secret (`RESEND_API_KEY`, `NOTIFY_EMAIL`).
+- **Keep-alive:** `.github/workflows/keep-supabase-awake.yml` pings the database every two days, so the free project never pauses.
+- **Not set up yet:**
+  - the Moyasar function, needed only when a client buys deposits
+  - the GitHub token for link-preview pages (links already work through 404.html)
+  - pg_cron (unpaid holds are released lazily anyway)
+
+The manual steps below describe how this was done, in case you ever need a second project.
+
 Mamar Booking is one booking platform that every Mamar client plugs into. All of it lives in this repo, so it deploys to **mamar.site** with your normal `git push`.
 
 | Page | URL | Who uses it |
