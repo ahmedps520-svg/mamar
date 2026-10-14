@@ -12,6 +12,9 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided automatically.
 // Later: a native iOS app adds an APNs sender next to webpush below.
 import webpush from 'npm:web-push@3.6.7';
+// The email look lives in platform/email.js (shared with the dev server), pinned to the commit that shipped it.
+// After editing that file: push, then bump the hash here and redeploy.
+import { emailFor, testEmail } from 'https://cdn.jsdelivr.net/gh/ahmedps520-svg/mamar@3e934405055bc2a66982709e6c237e9bb3172f60/platform/email.js';
 
 const SB_URL = Deno.env.get('SUPABASE_URL')!;
 const SB_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -70,36 +73,6 @@ async function isAdmin(req: Request) {
   return (await r.json()).is_admin === true;
 }
 
-const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
-const sar = (h: number | null) => (h == null ? 'Custom quote' : `${(h / 100).toLocaleString('en-US')} SAR`);
-
-function email(n: any) {
-  const note = n.notification;
-  const r = n.request;
-  const rows = r ? (r.estimate?.lines || []).map((l: any) =>
-    `<tr><td style="padding:6px 0;color:#444">${esc(l.label_en)}${l.qty > 1 ? ` × ${l.qty}` : ''}</td>
-     <td style="padding:6px 0;text-align:right">${l.quote ? 'Custom quote' : l.amount_halalas ? sar(l.amount_halalas) : 'Included'}</td></tr>`).join('') : '';
-  const html = `<!doctype html><meta charset="utf-8"><div style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;max-width:560px;margin:auto;padding:24px;color:#111">
-  <p style="color:#FF4A2B;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin:0 0 8px">Mamar</p>
-  <h1 style="font-size:20px;margin:0 0 4px">${esc(note.title_en)}</h1><p style="margin:0 0 16px;color:#555">${esc(note.body_en)}</p>
-  ${r ? `<p style="margin:0 0 16px"><b>${esc(r.contact_name)}</b> · ${esc(r.phone)}${r.email ? ` · ${esc(r.email)}` : ''}<br>Ref ${esc(r.ref)}</p>
-  <table style="width:100%;border-collapse:collapse;border-top:1px solid #eee">${rows}
-  <tr><td style="padding:10px 0;border-top:1px solid #111"><b>Setup estimate</b></td><td style="padding:10px 0;border-top:1px solid #111;text-align:right"><b>${sar(r.setup_halalas)}</b></td></tr>
-  ${r.plan_code ? `<tr><td style="padding:6px 0;color:#444">Care plan (${esc(r.plan_interval)})</td><td style="text-align:right">${sar(r.plan_halalas)}</td></tr>` : ''}</table>` : ''}
-  <p style="margin:24px 0 0"><a href="https://mamar.site${esc(note.url)}" style="background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">Open in admin</a></p></div>`;
-  return { subject: note.title_en, html, text: `${note.title_en}\n${note.body_en}\nhttps://mamar.site${note.url}` };
-}
-
-function testEmail() {
-  const when = new Date().toLocaleString('en-GB', { timeZone: 'Asia/Riyadh' });
-  const html = `<!doctype html><meta charset="utf-8"><div style="font:15px/1.6 -apple-system,Segoe UI,sans-serif;max-width:520px;margin:auto;padding:24px;color:#111">
-  <p style="color:#FF4A2B;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin:0 0 8px">Mamar</p>
-  <h1 style="font-size:20px;margin:0 0 8px">Your booking emails work.</h1>
-  <p style="margin:0 0 12px;color:#555">Sent ${esc(when)} (Jeddah). New setup requests will arrive at this address too.</p>
-  <p dir="rtl" style="margin:0;color:#555">رسائل البريد تعمل. ستصلك طلبات الأنظمة الجديدة على هذا العنوان أيضاً.</p></div>`;
-  return { subject: 'Test email from Mamar', html, text: `Your booking emails work. Sent ${when} (Jeddah).` };
-}
-
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
   try {
@@ -113,7 +86,7 @@ Deno.serve(async (req) => {
     // The admin's "Send a test email" button.
     if (body?.action === 'test_email') {
       if (!(await isAdmin(req))) return Response.json({ ok: false, error: 'NOT_ALLOWED' }, { status: 403, headers: CORS });
-      const m = testEmail();
+      const m = testEmail(new Date().toLocaleString('en-GB', { timeZone: 'Asia/Riyadh' }));
       const out = await resend(Deno.env.get('NOTIFY_EMAIL') || '', m.subject, m.html, m.text);
       return Response.json(out, { status: out.ok ? 200 : 400, headers: CORS });
     }
@@ -143,7 +116,7 @@ Deno.serve(async (req) => {
     let emailed = false;
     let email_error: string | undefined;
     if (Deno.env.get('RESEND_API_KEY') && Deno.env.get('NOTIFY_EMAIL')) {
-      const m = email(n);
+      const m = emailFor(n);
       const out = await resend(Deno.env.get('NOTIFY_EMAIL')!, m.subject, m.html, m.text);
       emailed = out.ok;
       email_error = out.error;
