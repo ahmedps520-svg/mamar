@@ -2,7 +2,7 @@
 // the prayer table, links to Prices and the go-live checklist, sign out.
 import { h, toast } from '../../platform/ui/kit.js';
 import { t, lang, setLang } from '../../platform/i18n.js';
-import { rpc, mode, githubToken } from '../../platform/api.js';
+import { rpc, mode, githubToken, sendTestEmail, errorKey } from '../../platform/api.js';
 import { GITHUB_REPO } from '../../platform/config.js';
 import { prayerYear } from '../../platform/prayer.js';
 import * as fmt from '../../platform/fmt.js';
@@ -42,12 +42,27 @@ export default async function more({ app, root }) {
       await rpc('adm_notify_test', {});
       toast(t('push.test_sent'), { kind: 'ok', timeout: 4200 });
     }));
+    // Email test: sends one email right now and shows exactly what happened (Resend's own words on failure).
+    const emailBtn = h('button', { type: 'button', class: 'b-btn b-btn--ghost' }, ic('mail'), h('span', null, t('push.test_email')));
+    const emailResult = h('p', { class: 'adm-ghresult', role: 'status', 'aria-live': 'polite' });
+    emailBtn.addEventListener('click', () => busy(emailBtn, async () => {
+      emailResult.textContent = '';
+      try {
+        const r = await sendTestEmail();
+        emailResult.textContent = t('push.test_email_ok', { to: r.to });
+        toast(t('push.test_email_ok', { to: r.to }), { kind: 'ok', timeout: 5000 });
+      } catch (e) {
+        emailResult.textContent = e.code === 'EMAIL_FAILED' ? t('push.test_email_fail', { why: String(e.detail || '') }) : t(errorKey(e));
+      }
+    }));
     const ios = device.isIOS() && !device.isStandalone();
     fill(pushBox,
       statusLine,
       h('p', { class: 'adm-quiet' }, t('push.explain')),
       st === 'denied' && h('p', { class: 'adm-inlinewarn' }, ic('alert'), t('push.denied_help')),
-      h('div', { class: 'adm-quick' }, toggleBtn, testBtn),
+      h('div', { class: 'adm-quick' }, toggleBtn, testBtn, emailBtn),
+      emailResult,
+      h('p', { class: 'adm-quiet' }, t('push.test_email_hint')),
       h('div', { class: ['adm-ios', ios && 'is-hot'] },
         h('p', { class: 'adm-ios__title' }, ic('device'), t('push.ios_title')),
         h('ol', { class: 'adm-steps' }, ['push.ios1', 'push.ios2', 'push.ios3'].map((k) => h('li', null, t(k))))));

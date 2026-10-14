@@ -221,6 +221,26 @@ async function api(req, res, url) {
     return send(res, 200, { ok: true, path: `/b/${slug}/` });
   }
 
+  // Local stand-in for the admin's "Send a test email": writes to the outbox, or really sends
+  // through Resend when RESEND_API_KEY and MAMAR_NOTIFY_EMAIL are set in the environment.
+  if (p === '/api/admin/test-email' && req.method === 'POST') {
+    await needAdmin(req);
+    const to = process.env.MAMAR_NOTIFY_EMAIL || 'outbox';
+    const html = `<!doctype html><meta charset="utf-8"><p>Your booking emails work. Sent ${new Date().toISOString()}.</p>`;
+    if (process.env.RESEND_API_KEY && process.env.MAMAR_NOTIFY_EMAIL) {
+      const from = process.env.MAMAR_FROM_EMAIL || 'Mamar <onboarding@resend.dev>';
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST', headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'content-type': 'application/json' },
+        body: JSON.stringify({ from, to: [to], subject: 'Test email from Mamar', html }),
+      });
+      const d = await r.json().catch(() => ({}));
+      return send(res, r.ok ? 200 : 400, r.ok ? { ok: true, to, from, id: d.id } : { ok: false, to, from, error: d.message || `HTTP ${r.status}` });
+    }
+    const file = path.join(DATA, 'outbox', `${new Date().toISOString().replace(/[:.]/g, '-')}-test-email.html`);
+    fs.writeFileSync(file, html);
+    return send(res, 200, { ok: true, to: 'outbox', from: 'local', file });
+  }
+
   if (p === '/api/upload' && req.method === 'POST') {
     await needAdmin(req);
     const type = (req.headers['content-type'] || '').split(';')[0];

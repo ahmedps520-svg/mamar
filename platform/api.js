@@ -282,6 +282,29 @@ export async function verifyPayment(booking_id, token, moyasar_id) {
   return d;
 }
 
+/**
+ * Admin only: send one test email right now to the NOTIFY_EMAIL address.
+ * Resolves { ok, to, from, id } or rejects with ApiError('EMAIL_FAILED', resendMessage).
+ */
+export async function sendTestEmail() {
+  let r;
+  if (backend() === 'local') {
+    r = await fetch(`${PLATFORM_ORIGIN}/api/admin/test-email`, {
+      method: 'POST', headers: { authorization: `Bearer ${accessToken()}` },
+    });
+  } else {
+    r = await fetch(`${SUPABASE_URL}/functions/v1/notify`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${accessToken()}` },
+      body: JSON.stringify({ action: 'test_email' }),
+    });
+  }
+  const d = await r.json().catch(() => ({}));
+  if (r.status === 403) throw new ApiError('NOT_ALLOWED', null, 403);
+  if (!r.ok || !d.ok) throw new ApiError('EMAIL_FAILED', d.error || `HTTP ${r.status}`, r.status);
+  return d;
+}
+
 /** Public VAPID key for Web Push (local server generates its own). */
 export async function vapidPublicKey() {
   if (backend() === 'local') {

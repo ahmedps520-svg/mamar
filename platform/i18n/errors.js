@@ -26,6 +26,7 @@ export default {
     'err.NETWORK': 'تعذر الاتصال. تحقق من الإنترنت وحاول مرة أخرى.',
     'err.SERVER_ERROR': 'حدث خطأ غير متوقع. حاول مرة أخرى بعد قليل.',
     'err.TOO_LARGE': 'الملف كبير جداً.',
+    'err.EMAIL_FAILED': 'تعذر إرسال البريد.',
     'err.LOCAL_PASSWORD': 'على هذا الجهاز المحلي استخدم كلمة المرور.',
   },
   en: {
@@ -54,6 +55,7 @@ export default {
     'err.NETWORK': 'Couldn’t connect. Check your internet and try again.',
     'err.SERVER_ERROR': 'Something went wrong. Please try again in a moment.',
     'err.TOO_LARGE': 'That file is too large.',
+    'err.EMAIL_FAILED': 'The email couldn’t be sent.',
     'err.LOCAL_PASSWORD': 'On the local server, sign in with a password.',
   },
 };
