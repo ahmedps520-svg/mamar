@@ -13,6 +13,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import webpush from 'web-push';
 import { fileURLToPath } from 'node:url';
+import { emailFor, testEmail } from '../platform/email.js';
 import { openDb, rpc, ApiError, toApiError, ensureUser, findUser, checkPassword, isAdmin, seedPrayerTimes, ROOT } from './db.js';
 
 const PORT = +(process.env.PORT || 5600);
@@ -117,28 +118,6 @@ async function notify(id) {
   log(`notify ${note.kind}: push ${pushed}/${n.targets.length}, outbox written`);
 }
 
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const sar = (h) => (h == null ? 'Quote' : `${(h / 100).toLocaleString('en-US')} SAR`);
-function emailFor(n) {
-  const note = n.notification;
-  const r = n.request;
-  const subject = note.title_en;
-  const rows = r ? (r.estimate.lines || []).map((l) =>
-    `<tr><td style="padding:6px 0;color:#444">${esc(l.label_en)}${l.qty > 1 ? ` × ${l.qty}` : ''}</td>
-     <td style="padding:6px 0;text-align:right;font-variant-numeric:tabular-nums">${l.quote ? 'Custom quote' : l.amount_halalas ? sar(l.amount_halalas) : 'Included'}</td></tr>`).join('') : '';
-  const html = `<!doctype html><meta charset="utf-8"><div style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;max-width:560px;margin:auto;padding:24px;color:#111">
-  <p style="color:#FF4A2B;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin:0 0 8px">Mamar</p>
-  <h1 style="font-size:20px;margin:0 0 4px">${esc(note.title_en)}</h1>
-  <p style="margin:0 0 16px;color:#555">${esc(note.body_en)}</p>
-  ${r ? `<p style="margin:0 0 16px"><b>${esc(r.contact_name)}</b> · ${esc(r.phone)}${r.email ? ` · ${esc(r.email)}` : ''}<br>Ref ${esc(r.ref)}</p>
-  <table style="width:100%;border-collapse:collapse;border-top:1px solid #eee">${rows}
-  <tr><td style="padding:10px 0;border-top:1px solid #111"><b>Setup estimate</b></td><td style="padding:10px 0;border-top:1px solid #111;text-align:right"><b>${sar(r.setup_halalas)}</b></td></tr>
-  ${r.plan_code ? `<tr><td style="padding:6px 0;color:#444">Care plan (${esc(r.plan_interval)})</td><td style="text-align:right">${sar(r.plan_halalas)}</td></tr>` : ''}</table>` : ''}
-  <p style="margin:24px 0 0"><a href="https://mamar.site${esc(note.url)}" style="background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">Open in admin</a></p></div>`;
-  const text = `${note.title_en}\n${note.body_en}\n${r ? `${r.contact_name} · ${r.phone}\nSetup: ${sar(r.setup_halalas)}\n` : ''}https://mamar.site${note.url}`;
-  return { subject, html, text };
-}
-
 // ───────────── http helpers ─────────────
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
@@ -226,18 +205,18 @@ async function api(req, res, url) {
   if (p === '/api/admin/test-email' && req.method === 'POST') {
     await needAdmin(req);
     const to = process.env.MAMAR_NOTIFY_EMAIL || 'outbox';
-    const html = `<!doctype html><meta charset="utf-8"><p>Your booking emails work. Sent ${new Date().toISOString()}.</p>`;
+    const mail = testEmail(new Date().toLocaleString('en-GB', { timeZone: 'Asia/Riyadh' }));
     if (process.env.RESEND_API_KEY && process.env.MAMAR_NOTIFY_EMAIL) {
       const from = process.env.MAMAR_FROM_EMAIL || 'Mamar <onboarding@resend.dev>';
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST', headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'content-type': 'application/json' },
-        body: JSON.stringify({ from, to: [to], subject: 'Test email from Mamar', html }),
+        body: JSON.stringify({ from, to: [to], subject: mail.subject, html: mail.html, text: mail.text }),
       });
       const d = await r.json().catch(() => ({}));
       return send(res, r.ok ? 200 : 400, r.ok ? { ok: true, to, from, id: d.id } : { ok: false, to, from, error: d.message || `HTTP ${r.status}` });
     }
     const file = path.join(DATA, 'outbox', `${new Date().toISOString().replace(/[:.]/g, '-')}-test-email.html`);
-    fs.writeFileSync(file, html);
+    fs.writeFileSync(file, mail.html);
     return send(res, 200, { ok: true, to: 'outbox', from: 'local', file });
   }
 
