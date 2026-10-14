@@ -306,6 +306,35 @@ ul,ol{ margin:0; padding:0; list-style:none; }
 .step h3{ font-size:clamp(1.2rem,2.2vw,1.75rem); margin-bottom:12px; }
 .step p{ color:var(--ink-2); font-size:14.5px; }
 
+/* ---------- 13b. BOOKING ---------- */
+.bk__chips{ list-style:none; margin:0 0 clamp(30px,4vw,48px); padding:0; display:flex; flex-wrap:wrap; gap:10px; }
+.bk__chips li{ padding:9px 16px; border:1px solid var(--line-2); border-radius:100px;
+  font-family:var(--ff-m); font-size:12px; letter-spacing:.04em; color:var(--ink-2); }
+.bk__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line);
+  border:1px solid var(--line); }
+.bk__demo{ display:flex; flex-direction:column; gap:12px; min-height:250px; background:var(--bg);
+  padding:clamp(26px,3.2vw,42px); transition:background .45s; }
+.bk__demo:hover{ background:var(--bg-2); }
+.bk__kind{ font-family:var(--ff-m); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--red); }
+.bk__demo b{ font-family:var(--ff-d); font-weight:400; font-size:clamp(1.6rem,2.8vw,2.3rem); line-height:1.08; }
+.bk__note{ color:var(--ink-2); font-size:14.5px; max-width:34ch; }
+.bk__go{ margin-top:auto; padding-top:14px; display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--ff-m); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); }
+.bk__go svg{ width:16px; height:16px; fill:none; stroke:var(--red); stroke-width:1.6; stroke-linecap:round;
+  stroke-linejoin:round; transition:transform .45s var(--e); }
+[dir="rtl"] .bk__go svg{ transform:scaleX(-1); }
+.bk__demo:hover .bk__go svg{ transform:translateX(5px); }
+[dir="rtl"] .bk__demo:hover .bk__go svg{ transform:scaleX(-1) translateX(5px); }
+.bk__cta{ display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:clamp(36px,5vw,56px); }
+.bk__ask{ direction:inherit; }
+.bk__fine{ margin-top:22px; font-family:var(--ff-m); font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--mut); max-width:80ch; }
+
+/* Arabic letters must join: no letter-spacing or monospace on Arabic labels */
+html[lang="ar"] :is(.tag, .eyebrow, .scroll, .talk__fine, .talk__or, .bk__chips li, .bk__kind, .bk__go, .bk__fine,
+  .bk__cta .wa--big, .bk__cta .mail){
+  letter-spacing:0; font-family:var(--ff-b); text-transform:none; }
+
 /* ---------- 14. TALK ---------- */
 .talk{ position:relative; padding-block:clamp(84px,13vw,180px); border-top:1px solid var(--line);
   overflow:hidden; text-align:center; }
@@ -395,6 +424,8 @@ ul,ol{ margin:0; padding:0; list-style:none; }
   .nav__r .wa--sm span{ display:none; }
   .nav__r .wa--sm{ padding:10px; }
   .steps{ grid-template-columns:1fr; }
+  .bk__grid{ grid-template-columns:1fr; }
+  .bk__demo{ min-height:0; }
   .dock{ display:flex; }
   .hero{ padding-bottom:110px; }
 }
@@ -405,6 +436,7 @@ ul,ol{ margin:0; padding:0; list-style:none; }
   .wa--big{ width:100%; }
   .mail{ width:100%; justify-content:center; padding:17px 20px; font-size:13.5px; }
   .talk__ways{ gap:12px; }
+  .bk__cta{ gap:12px; }
   .row{ grid-template-columns:1fr; }
   .row p{ grid-column:1; }
   .row__n{ padding-top:0; }
