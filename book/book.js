@@ -266,7 +266,9 @@ export async function mountBooking({ slug, source = 'web', embed = false, servic
     section: () => [t('bk.q.section'), t('bk.h.section')],
     service: () => [t('bk.q.service'), null],
     qty: () => [svc()?.per_person ? t('bk.q.people') : t('bk.q.qty'), svc()?.per_person ? t('bk.h.people') : null],
-    staff: () => [t(S.data.business.kind === 'salon' ? 'bk.q.chair' : 'bk.q.staff'), t('bk.h.staff')],
+    // "Which chair?" only when the staff really are chairs; named barbers get "Who would you like?"
+    staff: () => [t(S.data.business.kind === 'salon' && (S.data.staff || []).length
+      && S.data.staff.every((s) => /chair|كرسي/i.test(`${s.label_en || ''} ${s.label_ar || ''}`)) ? 'bk.q.chair' : 'bk.q.staff'), t('bk.h.staff')],
     where: () => [locFor(svc()) === 'mobile' && svc()?.location === 'mobile' ? t('bk.q.where_home') : t('bk.q.where'),
       svc()?.location === 'mobile' ? t('bk.h.where_home') : null],
     when: () => [t('bk.q.when'), whenHint()],
