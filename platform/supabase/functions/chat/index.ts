@@ -8,8 +8,10 @@
 //   • per-visitor and site-wide daily caps, counted in public.chat_usage (svc_chat_take)
 //
 // POST { messages: [{ role: 'user'|'assistant', content: string }], lang: 'ar'|'en' }
-//   → 200 text/plain, the answer streamed as it is written
+//   → 200 text/plain, the answer streamed as it is written (ends with [[contact]] when the form should open)
 //   → 400/429/503 JSON { error: 'BAD_INPUT' | 'LIMIT' | 'UNAVAILABLE' }
+// POST { action: 'contact', name, phone, message, lang, transcript, website }   (the "talk to a person" form)
+//   → 200 { ok: true } · 400 BAD_INPUT · 429 LIMIT — stored by svc_chat_contact, which notifies Ahmed
 //
 // Secret: ANTHROPIC_API_KEY (Edge Function secrets). Optional: CHAT_PER_VISITOR (default 25 a day),
 // CHAT_PER_DAY (default 600 a day for the whole site). SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are automatic.
@@ -59,12 +61,17 @@ How to answer:
 - Be brief: usually 2–4 short sentences, at most about 90 words. Use short "• " lines only for lists. No headings, no tables, no markdown symbols like ** or #. Do not include internal or system XML tags in your response.
 - Only state facts from this prompt. If you don't know something (a date, a custom feature, a website price), say so and point them to WhatsApp. Never invent prices, timelines, discounts, guarantees, clients or reviews.
 - Prices you give from the booking price sheet are estimates; Mamar confirms the final price with the client before any payment.
-- Don't ask for personal details. To start a project or get a quote, send them to WhatsApp or the setup page.
+- Never ask for personal details in your replies; the form collects them. To start a project or get a quote, offer the form (see below), WhatsApp, or the setup page.
 - You are an AI assistant, not Ahmed. If asked, say so.
 
 Contact:
 - WhatsApp: 055 979 7724 → https://wa.me/966559797724 (messages only, no calls). Ahmed replies himself.
 - Email: contact@mamar.site (reply within a day).
+
+Talking to a person:
+- When the visitor asks to talk to a person, Ahmed, or "someone", asks to be called or contacted, wants to leave a message, wants a quote for their own project, or asks something only Ahmed can answer, reply in one or two short sentences that they can leave their name and WhatsApp number in the form below and Ahmed will reply on WhatsApp (or message him directly on WhatsApp), and end your reply with the exact text [[contact]] on its own.
+- Use [[contact]] only in that case, at most once, and never explain or mention it.
+
 
 Mamar websites:
 - Hand-coded by Ahmed: no page builders, no templates. Every site is designed from the business's own identity (its colours, its sign, its place), so no two look alike.
@@ -135,9 +142,24 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: H });
   const fail = (error: string, status: number) => Response.json({ error }, { status, headers: H });
   if (req.method !== 'POST') return fail('BAD_INPUT', 405);
-  if (!Deno.env.get('ANTHROPIC_API_KEY')) return fail('UNAVAILABLE', 503);
-
   const body = await req.json().catch(() => null);
+
+  // "Talk to a person": no model call, just store it and let the notifications pipeline tell Ahmed.
+  if (body?.action === 'contact') {
+    if (body.website) return Response.json({ ok: true }, { headers: H });            // honeypot: pretend, store nothing
+    try {
+      await rpc('svc_chat_contact', {
+        who: await visitorHash(req), name: body.name, phone: body.phone, message: body.message,
+        lang: body.lang === 'en' ? 'en' : 'ar', transcript: Array.isArray(body.transcript) ? body.transcript.slice(-8) : [],
+      });
+      return Response.json({ ok: true }, { headers: H });
+    } catch (e) {
+      const m = String((e as Error)?.message || e);
+      return m.includes('RATE_LIMITED') ? fail('LIMIT', 429) : m.includes('BAD_INPUT') ? fail('BAD_INPUT', 400) : fail('UNAVAILABLE', 503);
+    }
+  }
+
+  if (!Deno.env.get('ANTHROPIC_API_KEY')) return fail('UNAVAILABLE', 503);
   const messages = clean(body?.messages);
   if (!messages) return fail('BAD_INPUT', 400);
 

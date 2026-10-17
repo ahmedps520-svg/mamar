@@ -12,10 +12,20 @@ import * as device from '../device.js';
 const CHUNK = 60;
 
 export default async function more({ app, root }) {
-  const prayer = await rpc('adm_prayer_status', { city: 'jeddah' }).catch(() => null);
+  const [prayer, chat] = await Promise.all([
+    rpc('adm_prayer_status', { city: 'jeddah' }).catch(() => null),
+    rpc('adm_chat_stats').catch(() => null)]);
 
   /* ---------- shortcuts ---------- */
   const shortcuts = h('div', { class: 'b-list' },
+    h('a', { class: 'b-row', href: '#/chat' },
+      h('span', { class: 'b-row__lead' }, ic('chat')),
+      h('span', { class: 'b-row__main' }, h('span', { class: 'b-row__title' }, t('chat.title')),
+        h('span', { class: 'b-row__sub' }, chat
+          ? [t('chat.row_today', { n: num(chat.today || 0) }), chat.open_contacts ? t('chat.row_waiting', { n: num(chat.open_contacts) }) : null].filter(Boolean).join(' · ')
+          : t('chat.sub'))),
+      chat?.open_contacts ? h('span', { class: 'b-badge b-badge--soft adm-badgehot' }, num(chat.open_contacts)) : null,
+      ic('forward', { class: 'b-row__chev' })),
     h('a', { class: 'b-row', href: '#/prices' },
       h('span', { class: 'b-row__lead' }, ic('tag')),
       h('span', { class: 'b-row__main' }, h('span', { class: 'b-row__title' }, t('nav.prices')), h('span', { class: 'b-row__sub' }, t('more.prices_sub'))),

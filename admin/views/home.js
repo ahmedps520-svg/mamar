@@ -6,7 +6,7 @@ import { URLS } from '../../platform/contract.js';
 import * as fmt from '../../platform/fmt.js';
 import { ic, num, money, pickName, when, pageHead, section, empty, errToast, enter } from '../ui.js';
 
-const KIND_ICON = { setup_request: 'inbox', plan_request: 'plan', payment_flag: 'card', test: 'bell' };
+const KIND_ICON = { setup_request: 'inbox', plan_request: 'plan', payment_flag: 'card', test: 'bell', chat_contact: 'chat' };
 
 export default async function home({ app, root }) {
   const [ov, drafts] = await Promise.all([rpc('adm_overview'), rpc('adm_requests', { status: 'draft' })]);

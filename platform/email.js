@@ -185,7 +185,7 @@ export function requestEmail(n) {
 /** Plan requests, payment flags, tests: a title, a line, and a button. */
 export function noticeEmail(n) {
   const note = n.notification;
-  const label = { plan_request: 'Care plan', payment_flag: 'Payment', test: 'Test' }[note.kind] || 'Mamar Booking';
+  const label = { plan_request: 'Care plan', payment_flag: 'Payment', test: 'Test', chat_contact: 'Website chat' }[note.kind] || 'Mamar Booking';
   const admin = `${BRAND.site}${note.url || '/admin/'}`;
   const content = [
     `<tr><td class="px" style="padding:34px 32px 8px">
@@ -203,9 +203,64 @@ export function noticeEmail(n) {
   };
 }
 
+/** A visitor asked the website assistant for a person: who, how to reach them, what they said, and the chat before. */
+export function contactEmail(n) {
+  const note = n.notification;
+  const c = n.contact;
+  const ar = c.lang !== 'en';
+  const digits = String(c.phone || '').replace(/\D/g, '');
+  const waText = ar
+    ? `مرحباً ${c.name}، معك أحمد من ممر — وصلتني رسالتك من الموقع.`
+    : `Hi ${c.name}, this is Ahmed from Mamar — I got your message from the website.`;
+  const wa = digits ? `https://wa.me/${digits}?text=${encodeURIComponent(waText)}` : null;
+  const admin = `${BRAND.site}${note.url || '/admin/'}`;
+  const txt = (s, rtl) => `<span${rtl ? ` dir="rtl" style="font-family:${F.ar}"` : ''}>${esc(s).replace(/\n/g, '<br>')}</span>`;
+  const isAr = (s) => /[؀-ۿ]/.test(s || '');
+  const turns = (c.transcript || []).slice(-6).map((m) => {
+    const me = m.role !== 'assistant';
+    return `<tr><td style="padding:8px 0;border-top:1px solid ${BRAND.line}">
+      <p style="margin:0 0 3px;font-family:${F.m};font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:${me ? BRAND.red : BRAND.mut}">${me ? 'Visitor' : 'Assistant'}</p>
+      <p style="margin:0;font-size:13.5px;line-height:1.6;color:${me ? BRAND.ink : BRAND.ink2}${isAr(m.content) ? `;text-align:right` : ''}">${txt(m.content, isAr(m.content))}</p></td></tr>`;
+  }).join('');
+
+  const content = [
+    `<tr><td class="px" style="padding:34px 32px 8px">
+      ${eyebrow('Website chat · wants to talk to you')}
+      <h1 class="h1" style="margin:0;font-family:${isAr(c.name) ? F.ar : F.d};font-weight:${isAr(c.name) ? 600 : 400};font-size:38px;line-height:1.15;color:${BRAND.ink}">${esc(c.name)}</h1>
+      <p dir="ltr" style="margin:8px 0 0;font-family:${F.m};font-size:15px;color:${BRAND.ink2}">${esc(phoneLocal(c.phone))}</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px"><tr>
+        ${wa ? `<td style="padding:0 10px 10px 0">${button(wa, 'Reply on WhatsApp', 'red')}</td>` : ''}
+        ${digits ? `<td style="padding:0 10px 10px 0">${button(`tel:+${digits}`, 'Call', 'ghost')}</td>` : ''}
+      </tr></table>
+    </td></tr>`,
+    c.message ? `<tr><td class="px" style="padding:18px 32px 6px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${BRAND.panel2}" style="background:${BRAND.panel2};border:1px solid ${BRAND.line};border-radius:16px">
+        <tr><td style="padding:18px 20px">
+          <p style="margin:0 0 8px;font-family:${F.m};font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:${BRAND.mut}">Their message</p>
+          <p style="margin:0;font-size:16px;line-height:1.65;color:${BRAND.ink}${isAr(c.message) ? ';text-align:right' : ''}">${txt(c.message, isAr(c.message))}</p>
+        </td></tr></table>
+    </td></tr>` : '',
+    turns ? `<tr><td class="px" style="padding:22px 32px 4px">
+      ${eyebrow('The chat before', BRAND.mut)}
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${turns}</table>
+    </td></tr>` : '',
+    `<tr><td class="px" style="padding:26px 32px 34px">
+      ${button(admin, 'Open in admin  →', 'ink')}
+      <p style="margin:16px 0 0;font-size:12.5px;line-height:1.6;color:${BRAND.mut}">They wrote in ${ar ? 'Arabic' : 'English'}; the WhatsApp button starts your reply in the same language.</p>
+    </td></tr>`,
+  ].filter(Boolean);
+  return {
+    subject: `Website chat · ${c.name} wants to talk`,
+    html: shell({ title: `Website chat · ${c.name}`, preheader: `${phoneLocal(c.phone)}${c.message ? ` · ${c.message.slice(0, 90)}` : ''}`, content }),
+    text: `${c.name} (${phoneLocal(c.phone)}) wants to talk, from the website chat.\n\n${c.message || ''}\n\nReply on WhatsApp: ${wa || '-'}\nOpen in admin: ${admin}`,
+  };
+}
+
 /** Pick the right email for a notification. */
 export function emailFor(n) {
-  return n.notification.kind === 'setup_request' && n.request ? requestEmail(n) : noticeEmail(n);
+  if (n.notification.kind === 'setup_request' && n.request) return requestEmail(n);
+  if (n.notification.kind === 'chat_contact' && n.contact) return contactEmail(n);
+  return noticeEmail(n);
 }
 
 /** The admin's "Send a test email" button. */

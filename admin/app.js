@@ -25,6 +25,7 @@ const ROUTES = [
   { re: /^\/prices\/?$/, view: 'prices', tab: 'prices' },
   { re: /^\/more\/?$/, view: 'more', tab: 'more' },
   { re: /^\/more\/golive\/?$/, view: 'golive', tab: 'more' },
+  { re: /^\/chat\/?$/, view: 'chat', tab: 'more' },
 ];
 const VIEWS = {
   home: () => import('./views/home.js'),
@@ -35,6 +36,7 @@ const VIEWS = {
   prices: () => import('./views/prices.js'),
   more: () => import('./views/more.js'),
   golive: () => import('./views/golive.js'),
+  chat: () => import('./views/chat.js'),
 };
 
 /* ---------- shared app state (views read it through ctx.app) ---------- */
@@ -317,7 +319,7 @@ async function pulseOnce(announce) {
     app.overview = ov;
     paintBadges(ov);
     if (announce && fresh.length) {
-      if (fresh.some((n) => n.kind === 'setup_request')) device.chime();
+      if (fresh.some((n) => n.kind === 'setup_request' || n.kind === 'chat_contact')) device.chime();
       haptic([10, 50, 10]);
       for (const n of fresh.slice(0, 2).reverse()) {
         toast(pickName(n, 'title'), {

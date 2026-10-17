@@ -923,3 +923,29 @@ html[lang="en"] {
 
 /* the hidden attribute always wins over component display rules */
 .adm [hidden] { display: none !important; }
+
+/* ---------- website chat ---------- */
+.adm-note__ic--chat_contact { color: var(--b-accent-text); background: var(--b-accent-soft); }
+.adm-badgehot { color: var(--b-accent-text); background: var(--b-accent-soft); border-color: transparent; }
+.adm-chatlist { gap: 12px; }
+.adm-chatmsg { display: flex; flex-direction: column; gap: 12px; padding: 16px 18px; }
+.adm-chatmsg.is-new { border-color: color-mix(in srgb, var(--b-accent) 45%, transparent); }
+.adm-chatmsg__hd { display: flex; align-items: center; gap: 12px; }
+.adm-chatmsg__av { flex: 0 0 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: 600;
+  background: var(--b-surface-2); color: var(--b-ink); border: 1px solid var(--b-line); }
+.adm-chatmsg.is-new .adm-chatmsg__av { background: var(--b-accent-soft); color: var(--b-accent-text); border-color: transparent; }
+.adm-chatmsg__who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.adm-chatmsg__name { font-weight: 600; font-size: 16px; }
+.adm-chatmsg__meta { font-size: 12.5px; color: var(--b-mut); }
+.adm-chatmsg__meta bdi { font-family: var(--b-font-mono, ui-monospace, monospace); }
+.adm-chatmsg__text { margin: 0; font-size: 15px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere;
+  padding: 12px 14px; border-radius: 12px; background: var(--b-surface-2); }
+.adm-chatmsg__text.is-empty { color: var(--b-mut); font-style: italic; }
+.adm-chatmsg__tr summary { font-size: 13px; }
+.adm-chatmsg__turns { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.adm-chatmsg__turns li { display: flex; flex-direction: column; gap: 2px; font-size: 13.5px; line-height: 1.55; padding-inline-start: 10px;
+  border-inline-start: 2px solid var(--b-line-2); }
+.adm-chatmsg__turns li.is-me { border-inline-start-color: var(--b-accent); }
+.adm-chatmsg__turns li.is-bot span:last-child { color: var(--b-ink-2); }
+.adm-chatmsg__role { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--b-mut); }
+html[lang="ar"] .adm-chatmsg__role { letter-spacing: 0; text-transform: none; }

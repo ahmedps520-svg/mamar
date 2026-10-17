@@ -82,3 +82,30 @@ html[lang="ar"] .mc__b{ font-size:14px; line-height:1.85; }
 @media (prefers-reduced-motion:reduce){
   .mc, .mc-launch{ transition:none; } .mc__b--typing i{ animation:none; opacity:.6; }
 }
+
+/* "talk to a person": the footer link and the form card in the conversation */
+.mc__fine em{ font-style:normal; }
+.mc__leave{ border:0; background:none; padding:0; color:var(--ink-2); font:inherit; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+.mc__leave:hover, .mc__fine a:hover{ color:var(--ink); }
+.mc__form{ align-self:stretch; display:flex; flex-direction:column; gap:10px; padding:16px; border-radius:18px;
+  background:#15120F; border:1px solid rgba(255,74,43,.45); box-shadow:0 0 0 4px rgba(255,74,43,.06); }
+.mc__ft{ margin:0; font:400 22px/1.1 var(--ff-d); color:var(--ink); }
+html[lang="ar"] .mc__ft{ font-size:17px; font-weight:600; line-height:1.5; }
+.mc__fs{ margin:-4px 0 2px; font-size:12.5px; color:var(--ink-2); }
+.mc__form label{ display:flex; flex-direction:column; gap:5px; font-size:12px; font-weight:500; color:var(--ink-2); }
+.mc__form input, .mc__form textarea{ width:100%; box-sizing:border-box; border:1px solid var(--line-2); border-radius:12px; background:#0D0F12;
+  color:var(--ink); font:400 15px/1.4 var(--ff-b); padding:10px 12px; outline:0; resize:none; transition:border-color .2s; }
+.mc__form input[dir="ltr"]{ text-align:left; font-family:var(--ff-m); font-size:14.5px; }
+.mc__form input:focus, .mc__form textarea:focus{ border-color:rgba(255,74,43,.75); }
+.mc__form input::placeholder, .mc__form textarea::placeholder{ color:var(--mut); }
+.mc__hp{ position:absolute !important; left:-9999px; width:1px; height:1px; opacity:0; }
+.mc__ferr{ margin:0; font-size:12.5px; line-height:1.5; color:#FF8A73; }
+.mc__ferr:empty{ display:none; }
+.mc__ferr a{ color:inherit; }
+.mc__fb{ display:flex; gap:8px; flex-wrap:wrap; }
+.mc__fsend{ flex:1; min-width:150px; height:44px; border:0; border-radius:100px; background:var(--red); color:#fff; font:600 14.5px/1 var(--ff-b); cursor:pointer; }
+.mc__fsend:disabled{ opacity:.55; cursor:default; }
+.mc__fx{ height:44px; padding:0 16px; border:1px solid var(--line-2); border-radius:100px; background:none; color:var(--ink-2); font:500 13.5px/1 var(--ff-b); cursor:pointer; }
+.mc__ffine{ margin:0; font-size:11.5px; color:var(--mut); }
+.mc__b--ok{ border-color:rgba(95,196,139,.45); background:#101A14; }
+@media (max-width:560px){ .mc__form input, .mc__form textarea{ font-size:16px; } }
