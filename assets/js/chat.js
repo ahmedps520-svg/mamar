@@ -52,7 +52,7 @@ let busy = false;
 /* ---------- DOM ---------- */
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html) e.innerHTML = html; return e; };
 
-const launcher = el('button', 'mc-launch', `${ARCH}<span></span>`);
+const launcher = el('button', 'mc-launch', '<span class="mc-launch__bot" aria-hidden="true">🤖</span>');
 launcher.type = 'button';
 launcher.setAttribute('aria-haspopup', 'dialog');
 
@@ -109,8 +109,8 @@ function bubble(role, text) {
 }
 
 function paintStatic() {
-  launcher.querySelector('span').textContent = t('open');
   launcher.setAttribute('aria-label', t('open'));
+  launcher.title = t('open');
   panel.setAttribute('aria-label', t('title'));
   panel.dir = lang() === 'ar' ? 'rtl' : 'ltr';
   $('.mc__ti b').textContent = t('title');
@@ -250,6 +250,7 @@ form.addEventListener('submit', (e) => { e.preventDefault(); ask(box.value); });
 
 /* ---------- open / close ---------- */
 function open() {
+  launcher.classList.remove('glow');
   panel.hidden = false;
   requestAnimationFrame(() => panel.classList.add('on'));
   launcher.classList.add('off');
@@ -276,3 +277,6 @@ new MutationObserver(() => { paintStatic(); paintLog(); }).observe(document.docu
 
 paintStatic(); paintLog();
 document.body.append(launcher, panel);
+
+// five seconds in, the button starts to glow red so people notice it; opening the chat stops it
+setTimeout(() => { if (panel.hidden) launcher.classList.add('glow'); }, 5000);

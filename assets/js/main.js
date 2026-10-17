@@ -139,6 +139,7 @@
     if (!lazyFrames.length) return;
     var vh = window.innerHeight;
     lazyFrames = lazyFrames.filter(function (f) {
+      if (f.parentElement.offsetParent === null) return true;   // inside a closed project: wait until it's opened
       var r = f.parentElement.getBoundingClientRect();
       if (r.top < vh * 1.6 && r.bottom > -vh) {
         f.src = f.getAttribute('data-src');
@@ -154,6 +155,30 @@
   }
   window.addEventListener('resize', fitFrames);
   fitFrames();
+
+  /* ---------- 5b. THE OTHER NINE: collapsed rows, one open at a time ----------
+     Only INVTRA is shown in full; a project's details and live preview load when you open it. */
+  var folds = $$('.proj--fold');
+  function setFold(p, open) {
+    var head = $('.fold__head', p), body = $('.fold__body', p);
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+    p.classList.toggle('is-open', open);
+    body.hidden = !open;
+  }
+  folds.forEach(function (p) {
+    $('.fold__head', p).addEventListener('click', function () {
+      var open = !p.classList.contains('is-open');
+      folds.forEach(function (o) { if (o !== p && o.classList.contains('is-open')) setFold(o, false); });
+      setFold(p, open);
+      if (!open) return;
+      fitFrames(); loadFrames();
+      // keep the row you tapped where your thumb is (closing the one above can move it)
+      var top = p.getBoundingClientRect().top;
+      if (top < 64 || top > window.innerHeight * 0.6) {
+        window.scrollTo({ top: window.scrollY + top - 76, behavior: reduced ? 'auto' : 'smooth' });
+      }
+    });
+  });
 
   /* ---------- 6. REVEALS (scroll-driven, one-way) ---------- */
   var pending = $$('.rev');

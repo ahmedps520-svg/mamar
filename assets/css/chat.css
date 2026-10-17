@@ -1,16 +1,25 @@
 /* The Mamar assistant — launcher + chat window. Uses the site's tokens (style.css :root). */
 
-.mc-launch{ position:fixed; z-index:950; bottom:22px; inset-inline-end:22px;
-  display:flex; align-items:center; gap:10px; padding:13px 20px 13px 15px; border:1px solid var(--line-2);
-  border-radius:100px; background:rgba(13,15,18,.86); color:var(--ink); cursor:pointer;
-  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-  font:600 14.5px/1 var(--ff-b); letter-spacing:.005em;
-  box-shadow:0 18px 40px -14px rgba(0,0,0,.85), 0 0 0 1px rgba(255,74,43,.0);
+.mc-launch{ position:fixed; z-index:950; bottom:22px; inset-inline-end:22px; width:62px; height:62px; padding:0;
+  display:grid; place-items:center; border:1px solid var(--line-2); border-radius:50%; cursor:pointer;
+  background:radial-gradient(circle at 50% 35%, #1D2025, #0E1013); color:var(--ink);
+  box-shadow:0 18px 40px -14px rgba(0,0,0,.85);
   transition:transform .45s var(--e), opacity .3s, border-color .3s, box-shadow .3s; }
-.mc-launch svg{ width:22px; height:22px; fill:none; stroke:var(--red); stroke-width:2.8; stroke-linecap:round; stroke-linejoin:round; }
-.mc-launch:hover{ border-color:rgba(255,74,43,.6); box-shadow:0 18px 40px -14px rgba(0,0,0,.85), 0 0 0 4px rgba(255,74,43,.12); }
+.mc-launch__bot{ font-size:30px; line-height:1; font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
+  transform:translateY(1px); transition:transform .4s var(--e2); }
+.mc-launch:hover{ border-color:rgba(255,74,43,.7); }
+.mc-launch:hover .mc-launch__bot{ transform:translateY(-1px) rotate(-8deg) scale(1.08); }
 .mc-launch:focus-visible{ outline:2px solid var(--red); outline-offset:3px; }
-.mc-launch.off{ opacity:0; transform:translateY(16px) scale(.94); pointer-events:none; }
+.mc-launch.off{ opacity:0; transform:translateY(16px) scale(.9); pointer-events:none; }
+/* the glow: a red ring around the button and two rings pulsing outward */
+.mc-launch.glow{ border-color:var(--red); box-shadow:0 0 0 2px rgba(255,74,43,.35), 0 0 26px rgba(255,74,43,.55), 0 18px 40px -14px rgba(0,0,0,.85);
+  animation:mcBreath 2.4s ease-in-out infinite; }
+.mc-launch.glow::before, .mc-launch.glow::after{ content:''; position:absolute; inset:-2px; border-radius:50%; border:2px solid var(--red);
+  pointer-events:none; animation:mcRing 2.4s cubic-bezier(.2,.7,.2,1) infinite; }
+.mc-launch.glow::after{ animation-delay:1.2s; }
+@keyframes mcRing{ 0%{ transform:scale(1); opacity:.85; } 100%{ transform:scale(1.85); opacity:0; } }
+@keyframes mcBreath{ 0%,100%{ box-shadow:0 0 0 2px rgba(255,74,43,.35), 0 0 18px rgba(255,74,43,.4), 0 18px 40px -14px rgba(0,0,0,.85); }
+  50%{ box-shadow:0 0 0 3px rgba(255,74,43,.55), 0 0 34px rgba(255,74,43,.75), 0 18px 40px -14px rgba(0,0,0,.85); } }
 
 .mc{ position:fixed; z-index:960; bottom:22px; inset-inline-end:22px; width:392px; height:min(640px, calc(100dvh - 44px));
   display:flex; flex-direction:column; border:1px solid var(--line-2); border-radius:26px; overflow:hidden;
@@ -70,9 +79,8 @@ html[lang="ar"] .mc__b{ font-size:14px; line-height:1.85; }
 
 /* phones: the launcher sits above the WhatsApp bar; the window becomes a full-height sheet */
 @media (max-width:900px){
-  .mc-launch{ bottom:86px; inset-inline-end:16px; padding:0; width:56px; height:56px; justify-content:center; }
-  .mc-launch span{ display:none; }
-  .mc-launch svg{ width:24px; height:24px; }
+  .mc-launch{ bottom:86px; inset-inline-end:16px; width:58px; height:58px; }
+  .mc-launch__bot{ font-size:28px; }
 }
 @media (max-width:560px){
   .mc{ inset:0; width:auto; height:100dvh; border-radius:0; border:0; transform:translateY(40px); }
@@ -81,6 +89,7 @@ html[lang="ar"] .mc__b{ font-size:14px; line-height:1.85; }
 }
 @media (prefers-reduced-motion:reduce){
   .mc, .mc-launch{ transition:none; } .mc__b--typing i{ animation:none; opacity:.6; }
+  .mc-launch.glow{ animation:none; } .mc-launch.glow::before, .mc-launch.glow::after{ animation:none; opacity:0; }
 }
 
 /* "talk to a person": the footer link and the form card in the conversation */
