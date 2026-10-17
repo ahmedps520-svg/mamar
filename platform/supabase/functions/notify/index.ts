@@ -14,7 +14,7 @@
 import webpush from 'npm:web-push@3.6.7';
 // The email look lives in platform/email.js (shared with the dev server), pinned to the commit that shipped it.
 // After editing that file: push, then bump the hash here and redeploy.
-import { emailFor, testEmail } from 'https://cdn.jsdelivr.net/gh/ahmedps520-svg/mamar@3e934405055bc2a66982709e6c237e9bb3172f60/platform/email.js';
+import { emailFor, testEmail } from 'https://cdn.jsdelivr.net/gh/ahmedps520-svg/mamar@8fefdfdba8f44b417b12d06eed0b7f0e640d15b4/platform/email.js';
 
 const SB_URL = Deno.env.get('SUPABASE_URL')!;
 const SB_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
